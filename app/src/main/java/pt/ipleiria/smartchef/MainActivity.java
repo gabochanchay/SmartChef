@@ -50,10 +50,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
@@ -75,13 +84,26 @@ import com.google.api.services.vision.v1.model.WebDetection;
 import com.google.api.services.vision.v1.model.WebEntity;
 import com.google.api.services.vision.v1.model.WebImage;
 import com.google.api.services.vision.v1.model.WebPage;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import pt.ipleiria.smartchef.api.RecipeApi;
+import pt.ipleiria.smartchef.model.Recipe;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -100,6 +122,11 @@ public class MainActivity extends AppCompatActivity {
 
   private TextView mImageDetails;
   private ImageView mMainImage;
+
+  private static Logger log= Logger.getLogger("log");
+
+  private ArrayAdapter<Recipe> adapter;
+  private ListView listView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -460,5 +487,64 @@ public class MainActivity extends AppCompatActivity {
     }
 
     return message;
+  }
+
+  public void consumeApi(View view){
+    log.warning("BOOOOOOOTONNNN");
+    RequestQueue queue = Volley.newRequestQueue(this);
+    String url = "https://api.edamam.com/search?q=chicken&app_id=00fef183&app_key=54f40f77cbdd0f866bee7e8d4c7170a3&from=0&to=3&calories=591-722&health=alcohol-free";
+//    url = url.concat(foodName);
+    JsonObjectRequest request = new JsonObjectRequest(
+            Request.Method.GET,
+            url,
+            null,
+            new Response.Listener<JSONObject>() {
+              @Override
+              public void onResponse(JSONObject response) {
+                Log.d("Response", response.toString());
+                log.warning(response.toString());
+                try {
+                  Object recipes=response.get("hits");
+                  JSONArray arrayRecipes=response.getJSONArray("hits");
+                  List<Recipe> recipesList=new ArrayList<>();
+                  for (int i = 0; i < arrayRecipes.length(); i++) {
+                    JSONObject recipeJson=arrayRecipes.getJSONObject(i);
+                    Gson gson = new Gson();
+                    Object r=recipeJson.get("recipe");
+                    log.warning("sin nada "+r);
+                    Recipe contact = gson.fromJson(r.toString(), Recipe.class);
+                    log.warning(arrayRecipes.getJSONObject(i).toString());
+//                    contact= new Con
+                    recipesList.add(contact);
+                  }
+                  for (Recipe r : recipesList) {
+                    log.warning(r.getLabel()+ "-------"+ r.getImage()+ "----------");
+                  }
+                  adapter = new ArrayAdapter<Recipe>(getApplicationContext(),android.R.layout.simple_list_item_1,recipesList);
+                  listView = findViewById(R.id.listView_contacts); listView.setAdapter(adapter);
+                  adapter.notifyDataSetChanged();
+                }catch (JSONException e){
+                  log.warning(e.getMessage());
+                }
+//                Gson gson = new Gson();
+              }
+            },
+            new Response.ErrorListener() {
+              @Override
+              public void onErrorResponse(VolleyError error) {
+                Log.e("Response", error.getMessage());
+
+              }
+            }
+    )
+    {
+      @Override
+      public Map<String, String> getHeaders() {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        return headers;
+      }
+    };
+    queue.add(request);
   }
 }
