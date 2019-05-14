@@ -51,6 +51,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -491,8 +492,10 @@ public class MainActivity extends AppCompatActivity {
 
   public void consumeApi(View view){
     log.warning("BOOOOOOOTONNNN");
+    EditText et=findViewById(R.id.editText4);
+    String food=et.getText().toString();
     RequestQueue queue = Volley.newRequestQueue(this);
-    String url = "https://api.edamam.com/search?q=chicken&app_id=00fef183&app_key=54f40f77cbdd0f866bee7e8d4c7170a3&from=0&to=3&calories=591-722&health=alcohol-free";
+    String url = "https://api.edamam.com/search?q="+food+"&app_id=00fef183&app_key=54f40f77cbdd0f866bee7e8d4c7170a3&from=0&to=3&calories=591-722&health=alcohol-free";
 //    url = url.concat(foodName);
     JsonObjectRequest request = new JsonObjectRequest(
             Request.Method.GET,
@@ -502,7 +505,7 @@ public class MainActivity extends AppCompatActivity {
               @Override
               public void onResponse(JSONObject response) {
                 Log.d("Response", response.toString());
-                log.warning(response.toString());
+//                log.warning(response.toString());
                 try {
                   Object recipes=response.get("hits");
                   JSONArray arrayRecipes=response.getJSONArray("hits");
@@ -511,14 +514,17 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject recipeJson=arrayRecipes.getJSONObject(i);
                     Gson gson = new Gson();
                     Object r=recipeJson.get("recipe");
-                    log.warning("sin nada "+r);
                     Recipe contact = gson.fromJson(r.toString(), Recipe.class);
                     log.warning(arrayRecipes.getJSONObject(i).toString());
 //                    contact= new Con
                     recipesList.add(contact);
                   }
                   for (Recipe r : recipesList) {
-                    log.warning(r.getLabel()+ "-------"+ r.getImage()+ "----------");
+                    log.warning(r.getLabel());
+                    log.warning(r.getImage());
+                    for(String s : r.getIngredientLines()){
+                      log.warning(s);
+                    }
                   }
                   adapter = new ArrayAdapter<Recipe>(getApplicationContext(),android.R.layout.simple_list_item_1,recipesList);
                   listView = findViewById(R.id.listView_contacts); listView.setAdapter(adapter);
