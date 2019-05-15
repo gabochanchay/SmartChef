@@ -26,13 +26,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import pt.ipleiria.smartchef.adapter.CustomAdapter;
 import pt.ipleiria.smartchef.model.Recipe;
 
 public class RecipeList extends AppCompatActivity {
 
     private static Logger log= Logger.getLogger("log");
-
-    private ArrayAdapter<Recipe> adapter;
     private ListView listView;
 
     @Override
@@ -61,7 +60,7 @@ public class RecipeList extends AppCompatActivity {
                         try {
                             Object recipes=response.get("hits");
                             JSONArray arrayRecipes=response.getJSONArray("hits");
-                            List<Recipe> recipesList=new ArrayList<>();
+                            ArrayList<Recipe> recipesList=new ArrayList<>();
                             for (int i = 0; i < arrayRecipes.length(); i++) {
                                 JSONObject recipeJson=arrayRecipes.getJSONObject(i);
                                 Gson gson = new Gson();
@@ -72,15 +71,16 @@ public class RecipeList extends AppCompatActivity {
                                 recipesList.add(contact);
                             }
                             for (Recipe r : recipesList) {
-                                log.warning(r.getLabel());
-                                log.warning(r.getImage());
-                                for(String s : r.getIngredientLines()){
-                                    log.warning(s);
-                                }
+                                log.warning(r.getUri());
+//                                log.warning(r.getLabel());
+//                                log.warning(r.getImage());
+//                                for(String s : r.getIngredientLines()){
+//                                    log.warning(s);
+//                                }
                             }
-                            adapter = new ArrayAdapter<Recipe>(getApplicationContext(),android.R.layout.simple_list_item_1,recipesList);
-                            listView = findViewById(R.id.listView_contacts); listView.setAdapter(adapter);
-                            adapter.notifyDataSetChanged();
+                            CustomAdapter myCustomAdapter = new CustomAdapter(RecipeList.this ,recipesList);
+                            listView = findViewById(R.id.listView_contacts);
+                            listView.setAdapter(myCustomAdapter);
                         }catch (JSONException e){
                             log.warning(e.getMessage());
                         }
