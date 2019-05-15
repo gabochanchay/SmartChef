@@ -135,31 +135,31 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-
-    FloatingActionButton fab = findViewById(R.id.fab);
-    fab.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setMessage(R.string.dialog_select_prompt)
-            .setPositiveButton(R.string.dialog_select_gallery, new DialogInterface.OnClickListener() {
-              @Override
-              public void onClick(DialogInterface dialog, int which) {
-                startGalleryChooser();
-              }
-            })
-            .setNegativeButton(R.string.dialog_select_camera, new DialogInterface.OnClickListener() {
-              @Override
-              public void onClick(DialogInterface dialog, int which) {
-                startCamera();
-              }
-            });
-        builder.create().show();
-      }
-    });
-
-    mImageDetails = findViewById(R.id.image_details);
-    mMainImage = findViewById(R.id.main_image);
+//
+//    FloatingActionButton fab = findViewById(R.id.fab);
+//    fab.setOnClickListener(new View.OnClickListener() {
+//      @Override
+//      public void onClick(View view) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//        builder.setMessage(R.string.dialog_select_prompt)
+//            .setPositiveButton(R.string.dialog_select_gallery, new DialogInterface.OnClickListener() {
+//              @Override
+//              public void onClick(DialogInterface dialog, int which) {
+//                startGalleryChooser();
+//              }
+//            })
+//            .setNegativeButton(R.string.dialog_select_camera, new DialogInterface.OnClickListener() {
+//              @Override
+//              public void onClick(DialogInterface dialog, int which) {
+//                startCamera();
+//              }
+//            });
+//        builder.create().show();
+//      }
+//    });
+//
+//    mImageDetails = findViewById(R.id.image_details);
+//    mMainImage = findViewById(R.id.main_image);
   }
 
   public void startGalleryChooser() {
@@ -496,6 +496,7 @@ public class MainActivity extends AppCompatActivity {
     String food=et.getText().toString();
     RequestQueue queue = Volley.newRequestQueue(this);
     String url = "https://api.edamam.com/search?q="+food+"&app_id=00fef183&app_key=54f40f77cbdd0f866bee7e8d4c7170a3&from=0&to=3&calories=591-722&health=alcohol-free";
+    log.warning(url);
 //    url = url.concat(foodName);
     JsonObjectRequest request = new JsonObjectRequest(
             Request.Method.GET,

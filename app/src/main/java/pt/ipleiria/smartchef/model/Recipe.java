@@ -1,13 +1,14 @@
 package pt.ipleiria.smartchef.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Recipe implements Serializable {
 
     private String uri;
     private String label;
     private String image;
-
+    private List<String> ingredientLines;
     public String getUri() {
         return uri;
     }
@@ -30,6 +31,14 @@ public class Recipe implements Serializable {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public List<String> getIngredientLines() {
+        return ingredientLines;
+    }
+
+    public void setIngredientLines(List<String> ingredientLines) {
+        this.ingredientLines = ingredientLines;
     }
 
     @Override
