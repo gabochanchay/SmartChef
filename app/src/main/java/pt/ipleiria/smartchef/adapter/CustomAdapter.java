@@ -71,11 +71,6 @@ public class CustomAdapter extends BaseAdapter {
         TextView name = (TextView) convertView.findViewById(R.id.recipeName);
         ImageView image = (ImageView) convertView.findViewById(R.id.recipeImage);
         name.setText(tempRecipe.getLabel());
-//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//        StrictMode.setThreadPolicy(policy);
-//        image.setImageBitmap(getImageBitmap(tempRecipe.getUri()));
-//        Picasso.with(mContexxt).load(tempRecipe.getUri()).into(image);
-
         Picasso.get().load(tempRecipe.getImage()).into(image);
         return convertView;
     }

@@ -135,31 +135,31 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-//
-//    FloatingActionButton fab = findViewById(R.id.fab);
-//    fab.setOnClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View view) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//        builder.setMessage(R.string.dialog_select_prompt)
-//            .setPositiveButton(R.string.dialog_select_gallery, new DialogInterface.OnClickListener() {
-//              @Override
-//              public void onClick(DialogInterface dialog, int which) {
-//                startGalleryChooser();
-//              }
-//            })
-//            .setNegativeButton(R.string.dialog_select_camera, new DialogInterface.OnClickListener() {
-//              @Override
-//              public void onClick(DialogInterface dialog, int which) {
-//                startCamera();
-//              }
-//            });
-//        builder.create().show();
-//      }
-//    });
-//
-//    mImageDetails = findViewById(R.id.image_details);
-//    mMainImage = findViewById(R.id.main_image);
+
+    FloatingActionButton fab = findViewById(R.id.fab);
+    fab.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage(R.string.dialog_select_prompt)
+            .setPositiveButton(R.string.dialog_select_gallery, new DialogInterface.OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialog, int which) {
+                startGalleryChooser();
+              }
+            })
+            .setNegativeButton(R.string.dialog_select_camera, new DialogInterface.OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialog, int which) {
+                startCamera();
+              }
+            });
+        builder.create().show();
+      }
+    });
+
+    mImageDetails = findViewById(R.id.image_details);
+    mMainImage = findViewById(R.id.main_image);
   }
 
   public void startGalleryChooser() {
@@ -301,30 +301,30 @@ public class MainActivity extends AppCompatActivity {
             annotateImageRequest.setFeatures(new ArrayList<Feature>() {{
 
 
-              Feature textDetection = new Feature();
-              textDetection.setType("TEXT_DETECTION");
-              textDetection.setMaxResults(10);
-              add(textDetection);
+//              Feature textDetection = new Feature();
+//              textDetection.setType("TEXT_DETECTION");
+//              textDetection.setMaxResults(10);
+//              add(textDetection);
 
-              Feature landmarkDetection = new Feature();
-              landmarkDetection.setType("LANDMARK_DETECTION");
-              landmarkDetection.setMaxResults(10);
-              add(landmarkDetection);
+//              Feature landmarkDetection = new Feature();
+//              landmarkDetection.setType("LANDMARK_DETECTION");
+//              landmarkDetection.setMaxResults(10);
+//              add(landmarkDetection);
 
-              Feature logoDetection = new Feature();
-              logoDetection.setType("LOGO_DETECTION");
-              logoDetection.setMaxResults(10);
-              add(logoDetection);
+//              Feature logoDetection = new Feature();
+//              logoDetection.setType("LOGO_DETECTION");
+//              logoDetection.setMaxResults(10);
+//              add(logoDetection);
 
-              Feature faceDetection = new Feature();
-              faceDetection.setType("FACE_DETECTION");
-              faceDetection.setMaxResults(10);
-              add(faceDetection);
+//              Feature faceDetection = new Feature();
+//              faceDetection.setType("FACE_DETECTION");
+//              faceDetection.setMaxResults(10);
+//              add(faceDetection);
 
-              Feature imageProperties = new Feature();
-              imageProperties.setType("IMAGE_PROPERTIES");
-              imageProperties.setMaxResults(10);
-              add(imageProperties);
+//              Feature imageProperties = new Feature();
+//              imageProperties.setType("IMAGE_PROPERTIES");
+//              imageProperties.setMaxResults(10);
+//              add(imageProperties);
 
               Feature webDetection = new Feature();
               webDetection.setType("WEB_DETECTION");
@@ -404,7 +404,7 @@ public class MainActivity extends AppCompatActivity {
         message += "\n§ Full Matching Images:\n";
         for (WebImage fullMatchingImage :
             fullMatchingImages) {
-          message += String.format(Locale.US, "> %s \n", fullMatchingImage.getUrl());
+//          message += String.format(Locale.US, "> %s \n", fullMatchingImage.getUrl());
         }
       }
 
@@ -413,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
         message += "\n§ Partial Matching Images\n";
         for (WebImage partialMatchingImage :
             partialMatchingImages) {
-          message += String.format(Locale.US, "> %s \n", partialMatchingImage.getUrl());
+//          message += String.format(Locale.US, "> %s \n", partialMatchingImage.getUrl());
         }
       }
 
@@ -422,7 +422,7 @@ public class MainActivity extends AppCompatActivity {
         message += "\n§ Visually Similar Images\n";
         for (WebImage visuallySimilarImage :
             visuallySimilarImages) {
-          message += String.format(Locale.US, "> %s \n", visuallySimilarImage.getUrl());
+//          message += String.format(Locale.US, "> %s \n", visuallySimilarImage.getUrl());
         }
       }
 
@@ -431,7 +431,7 @@ public class MainActivity extends AppCompatActivity {
         message += "\n§ Pages With Matching Images\n";
         for (WebPage pageWithMatchingImage :
             pagesWithMatchingImages) {
-          message += String.format(Locale.US, "> %s \n", pageWithMatchingImage.getUrl());
+//          message += String.format(Locale.US, "> %s \n", pageWithMatchingImage.getUrl());
         }
       }
     }
