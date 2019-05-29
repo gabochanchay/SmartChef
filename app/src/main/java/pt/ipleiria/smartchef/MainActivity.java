@@ -225,11 +225,12 @@ public class MainActivity extends AppCompatActivity {
     if (uri != null) {
       try {
         // scale the image to save on bandwidth
+        ArrayList<Bitmap> bitmapList=new ArrayList<>();
         Bitmap bitmap = scaleBitmapDown(
             MediaStore.Images.Media.getBitmap(getContentResolver(), uri),
             1200);
 
-        callCloudVision(bitmap);
+//        callCloudVision(bitmap);
         mMainImage.setImageBitmap(bitmap);
 
       } catch (IOException e) {
@@ -242,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
     }
   }
 
-  private void callCloudVision(final Bitmap bitmap) throws IOException {
+  private void callCloudVision(final ArrayList<Bitmap> bitmapList) throws IOException {
     // Switch text to loading
     mImageDetails.setText(R.string.loading_message);
 
@@ -282,59 +283,69 @@ public class MainActivity extends AppCompatActivity {
           BatchAnnotateImagesRequest batchAnnotateImagesRequest =
               new BatchAnnotateImagesRequest();
           batchAnnotateImagesRequest.setRequests(new ArrayList<AnnotateImageRequest>() {{
-            AnnotateImageRequest annotateImageRequest = new AnnotateImageRequest();
+            for (Bitmap bm : bitmapList){
+              AnnotateImageRequest annotateImageRequest = createImagerequestPerImage(bm);
 
-            // Add the image
-            Image base64EncodedImage = new Image();
-            // Convert the bitmap to a JPEG
-            // Just in case it's a format that Android understands but Cloud Vision
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
-            byte[] imageBytes = byteArrayOutputStream.toByteArray();
+              // Add the list of one thing to the request
+              add(annotateImageRequest);
+              add(annotateImageRequest);
+            }
 
-            // Base64 encode the JPEG
-            base64EncodedImage.encodeContent(imageBytes);
-            annotateImageRequest.setImage(base64EncodedImage);
+          }
 
-            // add the features we want
-            // TODO: to add or remove features just (un)comment the blocks below
-            annotateImageRequest.setFeatures(new ArrayList<Feature>() {{
+            private AnnotateImageRequest createImagerequestPerImage(Bitmap bitmap) {
+              AnnotateImageRequest annotateImageRequest = new AnnotateImageRequest();
+
+              // Add the image
+              Image base64EncodedImage = new Image();
+              // Convert the bitmap to a JPEG
+              // Just in case it's a format that Android understands but Cloud Vision
+              ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+              bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
+              byte[] imageBytes = byteArrayOutputStream.toByteArray();
+
+              // Base64 encode the JPEG
+              base64EncodedImage.encodeContent(imageBytes);
+              annotateImageRequest.setImage(base64EncodedImage);
+
+              // add the features we want
+              // TODO: to add or remove features just (un)comment the blocks below
+              annotateImageRequest.setFeatures(new ArrayList<Feature>() {{
 
 
-//              Feature textDetection = new Feature();
-//              textDetection.setType("TEXT_DETECTION");
-//              textDetection.setMaxResults(10);
-//              add(textDetection);
+  //              Feature textDetection = new Feature();
+  //              textDetection.setType("TEXT_DETECTION");
+  //              textDetection.setMaxResults(10);
+  //              add(textDetection);
 
-//              Feature landmarkDetection = new Feature();
-//              landmarkDetection.setType("LANDMARK_DETECTION");
-//              landmarkDetection.setMaxResults(10);
-//              add(landmarkDetection);
+  //              Feature landmarkDetection = new Feature();
+  //              landmarkDetection.setType("LANDMARK_DETECTION");
+  //              landmarkDetection.setMaxResults(10);
+  //              add(landmarkDetection);
 
-//              Feature logoDetection = new Feature();
-//              logoDetection.setType("LOGO_DETECTION");
-//              logoDetection.setMaxResults(10);
-//              add(logoDetection);
+  //              Feature logoDetection = new Feature();
+  //              logoDetection.setType("LOGO_DETECTION");
+  //              logoDetection.setMaxResults(10);
+  //              add(logoDetection);
 
-//              Feature faceDetection = new Feature();
-//              faceDetection.setType("FACE_DETECTION");
-//              faceDetection.setMaxResults(10);
-//              add(faceDetection);
+  //              Feature faceDetection = new Feature();
+  //              faceDetection.setType("FACE_DETECTION");
+  //              faceDetection.setMaxResults(10);
+  //              add(faceDetection);
 
-//              Feature imageProperties = new Feature();
-//              imageProperties.setType("IMAGE_PROPERTIES");
-//              imageProperties.setMaxResults(10);
-//              add(imageProperties);
+  //              Feature imageProperties = new Feature();
+  //              imageProperties.setType("IMAGE_PROPERTIES");
+  //              imageProperties.setMaxResults(10);
+  //              add(imageProperties);
 
-              Feature webDetection = new Feature();
-              webDetection.setType("WEB_DETECTION");
-              webDetection.setMaxResults(10);
-              add(webDetection);
-            }});
-
-            // Add the list of one thing to the request
-            add(annotateImageRequest);
-          }});
+                Feature webDetection = new Feature();
+                webDetection.setType("WEB_DETECTION");
+                webDetection.setMaxResults(10);
+                add(webDetection);
+              }});
+              return annotateImageRequest;
+            }
+          });
 
           Vision.Images.Annotate annotateRequest = vision.images().annotate(batchAnnotateImagesRequest);
           // Due to a bug: requests to Vision API containing large images fail when GZipped.
