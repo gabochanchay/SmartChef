@@ -15,11 +15,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
@@ -41,14 +48,25 @@ import com.google.api.services.vision.v1.model.WebDetection;
 import com.google.api.services.vision.v1.model.WebEntity;
 import com.google.api.services.vision.v1.model.WebImage;
 import com.google.api.services.vision.v1.model.WebPage;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Logger;
+
+import pt.ipleiria.smartchef.model.Recipe;
 
 public class UploadImagesactivity extends AppCompatActivity {
 
@@ -61,6 +79,8 @@ public class UploadImagesactivity extends AppCompatActivity {
     private static final String CLOUD_VISION_API_KEY = "AIzaSyCkRTDlHPRu1jQBdk4uKEJHpXzBNygT3EE";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
     private static final String ANDROID_PACKAGE_HEADER = "X-Android-Package";
+    private static final String FOOD_TAXONOMY = "food and drink_";
+
     private static final String TAG = UploadImagesactivity.class.getSimpleName();
 
     private int imageNumber=0;
@@ -71,29 +91,36 @@ public class UploadImagesactivity extends AppCompatActivity {
 
     private ArrayList<Bitmap> bitmapArrayList;
 
+    private List<String> objectsDetected=new ArrayList<>();
+    private List<String> foodDetected;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_imagesactivity);
         reesultTextView = findViewById(R.id.resultText);
         bitmapArrayList = new ArrayList<>(4);
+
     }
 
     public void selectSource(View view){
-        log.warning(String.valueOf(view.getId()));
-        String idString= String.valueOf(view.getId());
-        if(idString.compareTo("2131230755")==0){
+
+        String idString = view.getResources().getResourceEntryName(view.getId());
+//        String idString= String.valueOf(view.getId());
+        if(idString.compareTo("btn1")==0){
             imageNumber = 1;
         }
-        if(idString.compareTo("2131230756")==0){
+        if(idString.compareTo("btn2")==0){
             imageNumber = 2;
         }
-        if(idString.compareTo("2131230757")==0){
+        if(idString.compareTo("btn3")==0){
             imageNumber = 3;
         }
-        if(idString.compareTo("2131230758")==0){
+        if(idString.compareTo("btn4")==0){
             imageNumber = 4;
         }
+        log.warning(idString);
         log.warning(String.valueOf(imageNumber));
         AlertDialog.Builder builder = new AlertDialog.Builder(UploadImagesactivity.this);
         builder.setMessage(R.string.dialog_select_prompt)
@@ -283,17 +310,23 @@ public class UploadImagesactivity extends AppCompatActivity {
         String message = "";
         List<EntityAnnotation> annotations;
         log.warning(String.valueOf(response.getResponses().size()));
+//        objectsDetected= new ArrayList<>();
         for(int i=0; i<response.getResponses().size(); i++){
             AnnotateImageResponse annotateImageResponse = response.getResponses().get(i);
-            message += "\n___\n# WEB DETECTION \n";
+//            message += "\n___\n# WEB DETECTION \n";
             WebDetection webDetection = annotateImageResponse.getWebDetection();
             if (webDetection != null) {
                 List<WebEntity> webEntities = webDetection.getWebEntities();
                 if (webEntities != null) {
-                    message += "\n§ Web Entities:\n";
+//                    message += "\n§ Web Entities:\n";
                     for (WebEntity webEntity :
                             webEntities) {
-                        message += String.format(Locale.US, "> %.3f: %s \n", webEntity.getScore(), webEntity.getDescription());
+                        message += String.format(Locale.US, "> %.3f: %s ", webEntity.getScore(), webEntity.getDescription());
+                        log.warning(String.valueOf(webEntity.getScore()));
+                        Double doubleScore=Double.valueOf(webEntity.getScore());
+                        if(doubleScore.compareTo(0.5)>0) {
+                            objectsDetected.add(webEntity.getDescription());
+                        }
                     }
                 }
 
@@ -390,7 +423,7 @@ public class UploadImagesactivity extends AppCompatActivity {
         return message;
     }
 
-    private void callCloudVision(final ArrayList<Bitmap> bitmapList) throws IOException {
+    private void    callCloudVision(final ArrayList<Bitmap> bitmapList) throws IOException {
 //        private void callCloudVision(final Bitmap bitmapImage) throws IOException {
         // Switch text to loading
 
@@ -501,7 +534,18 @@ public class UploadImagesactivity extends AppCompatActivity {
                     Log.d(TAG, "created Cloud Vision request object, sending request");
 
                     BatchAnnotateImagesResponse response = annotateRequest.execute();
-                    return convertResponseToString(response);
+                    String r=convertResponseToString(response);
+                    foodDetected = new ArrayList<>();
+                    for(String s: objectsDetected){
+                        consumeTaxonomyApi(s);
+                    }
+                    String words="";
+                    for(String s: foodDetected){
+                        words+=s;
+                    }
+                    log.warning("*******************"+words);
+                    reesultTextView.setText(reesultTextView.getText()+words);
+                    return r;
 
                 } catch (GoogleJsonResponseException e) {
                     Log.d(TAG, "failed to make API request because " + e.getContent());
@@ -513,7 +557,9 @@ public class UploadImagesactivity extends AppCompatActivity {
             }
 
             protected void onPostExecute(String result) {
+
                 reesultTextView.setText(result);
+
             }
         }.execute();
     }
@@ -523,11 +569,71 @@ public class UploadImagesactivity extends AppCompatActivity {
 //            for(Bitmap bm: bitmapArrayList) {
 //                callCloudVision(bm);
 //            }
+            objectsDetected = new ArrayList<>();
             callCloudVision(bitmapArrayList);
+
         }catch (IOException e){
             log.warning(e.getMessage());
         }
     }
+
+
+
+
+    public void consumeTaxonomyApi(final String word) {
+    log.warning("-----------------------------"+word);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "https://api.uclassify.com/v1/uclassify/iab-taxonomy/classify?readkey=BaCk5w4RQ4y2&text="+word;
+//    log.warning(url);
+        final boolean food=false;
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+//                        log.warning(response.toString());
+
+                        try {
+
+                        Iterator<String> array= response.keys();
+
+                        while (array.hasNext()){
+                            String key = array.next();
+                            Object value = response.get(key);
+                            Double d=(Double) value;
+
+                            if(d.compareTo(0.5)>0) {
+                                log.warning("key:" + key+ "-"+ String.valueOf(d));
+                                foodDetected.add(word);
+
+                            }
+                        }
+                        } catch (Exception e) {
+                            log.warning(e.getMessage());
+                        }
+//                Gson gson = new Gson();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Response", error.getMessage());
+
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+        };
+        queue.add(request);
+    }
+
 
 
 }

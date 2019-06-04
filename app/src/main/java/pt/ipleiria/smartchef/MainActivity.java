@@ -508,7 +508,6 @@ public class MainActivity extends AppCompatActivity {
     RequestQueue queue = Volley.newRequestQueue(this);
     String url = "https://api.edamam.com/search?q="+food+"&app_id=00fef183&app_key=54f40f77cbdd0f866bee7e8d4c7170a3&from=0&to=3&calories=591-722&health=alcohol-free";
     log.warning(url);
-//    url = url.concat(foodName);
     JsonObjectRequest request = new JsonObjectRequest(
             Request.Method.GET,
             url,
