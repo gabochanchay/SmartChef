@@ -528,6 +528,7 @@ public class MainActivity extends AppCompatActivity {
                     Recipe contact = gson.fromJson(r.toString(), Recipe.class);
                     log.warning(arrayRecipes.getJSONObject(i).toString());
 //                    contact= new Con
+                    
                     recipesList.add(contact);
                   }
                   for (Recipe r : recipesList) {
