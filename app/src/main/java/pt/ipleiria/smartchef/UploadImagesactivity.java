@@ -588,7 +588,7 @@ public class UploadImagesactivity extends AppCompatActivity {
         String url = "https://api.uclassify.com/v1/uclassify/iab-taxonomy/classify?readkey=BaCk5w4RQ4y2&text="+word;
 //    log.warning(url);
 
-        
+
         final boolean food=false;
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
