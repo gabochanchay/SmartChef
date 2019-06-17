@@ -508,6 +508,7 @@ public class MainActivity extends AppCompatActivity {
     RequestQueue queue = Volley.newRequestQueue(this);
     String url = "https://api.edamam.com/search?q="+food+"&app_id=00fef183&app_key=54f40f77cbdd0f866bee7e8d4c7170a3&from=0&to=3&calories=591-722&health=alcohol-free";
     log.warning(url);
+    
     JsonObjectRequest request = new JsonObjectRequest(
             Request.Method.GET,
             url,
@@ -528,7 +529,7 @@ public class MainActivity extends AppCompatActivity {
                     Recipe contact = gson.fromJson(r.toString(), Recipe.class);
                     log.warning(arrayRecipes.getJSONObject(i).toString());
 //                    contact= new Con
-                    
+
                     recipesList.add(contact);
                   }
                   for (Recipe r : recipesList) {
