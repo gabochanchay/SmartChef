@@ -330,6 +330,17 @@ public class UploadImagesactivity extends AppCompatActivity {
                     }
                 }
 
+                foodDetected = new ArrayList<>();
+                for(String s: objectsDetected){
+                    consumeTaxonomyApi(s);
+                }
+                String words="";
+                for(String s: foodDetected){
+                    words+=s;
+                }
+                log.warning("*******************"+words);
+                reesultTextView.setText(reesultTextView.getText()+words);
+
 //                List<WebImage> fullMatchingImages = webDetection.getFullMatchingImages();
 //                if (fullMatchingImages != null) {
 //                    message += "\n§ Full Matching Images:\n";
@@ -535,16 +546,7 @@ public class UploadImagesactivity extends AppCompatActivity {
 
                     BatchAnnotateImagesResponse response = annotateRequest.execute();
                     String r=convertResponseToString(response);
-                    foodDetected = new ArrayList<>();
-                    for(String s: objectsDetected){
-                        consumeTaxonomyApi(s);
-                    }
-                    String words="";
-                    for(String s: foodDetected){
-                        words+=s;
-                    }
-                    log.warning("*******************"+words);
-                    reesultTextView.setText(reesultTextView.getText()+words);
+
                     return r;
 
                 } catch (GoogleJsonResponseException e) {
