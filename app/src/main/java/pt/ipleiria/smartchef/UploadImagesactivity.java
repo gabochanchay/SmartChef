@@ -58,6 +58,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -67,6 +68,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import pt.ipleiria.smartchef.model.Recipe;
+import pt.ipleiria.smartchef.util.CloudVision;
 
 public class UploadImagesactivity extends AppCompatActivity {
 
@@ -559,7 +561,7 @@ public class UploadImagesactivity extends AppCompatActivity {
             }
 
             protected void onPostExecute(String result) {
-
+                log.warning("post execute");
                 reesultTextView.setText(result);
 
             }
@@ -572,7 +574,13 @@ public class UploadImagesactivity extends AppCompatActivity {
 //                callCloudVision(bm);
 //            }
             objectsDetected = new ArrayList<>();
-            callCloudVision(bitmapArrayList);
+//            callCloudVision(bitmapArrayList);
+            List<String> responseArray= CloudVision.callCloudVision(bitmapArrayList,CLOUD_VISION_API_KEY,getPackageName(),ANDROID_PACKAGE_HEADER,getPackageManager(),ANDROID_CERT_HEADER);
+            for(String s: responseArray){
+                log.warning("word:"+ s);
+                consumeTaxonomyApi(URLEncoder.encode(s,"UTF-8"));
+            }
+
 
         }catch (IOException e){
             log.warning(e.getMessage());
@@ -589,7 +597,7 @@ public class UploadImagesactivity extends AppCompatActivity {
 //    log.warning(url);
 
 
-        final boolean food=false;
+//        final boolean food=false;
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
