@@ -45,12 +45,6 @@ public class CloudVision {
     public static ArrayList<String> callCloudVision(final ArrayList<Bitmap> bitmapList, final String key, final String packageName,
                                         final String packageHeader, final PackageManager packageManager,
                                         final String androidCertHeader) throws IOException {
-//        private void callCloudVision(final Bitmap bitmapImage) throws IOException {
-        // Switch text to loading
-
-//        reesultTextView.setText(R.string.loading_message);
-
-        // Do the real work in an async task, because we need to use the network anyway
         String responseResult = "";
         try {
 
@@ -118,32 +112,6 @@ public class CloudVision {
                                 // TODO: to add or remove features just (un)comment the blocks below
                                 annotateImageRequest.setFeatures(new ArrayList<Feature>() {{
 
-
-                                    //              Feature textDetection = new Feature();
-                                    //              textDetection.setType("TEXT_DETECTION");
-                                    //              textDetection.setMaxResults(10);
-                                    //              add(textDetection);
-
-                                    //              Feature landmarkDetection = new Feature();
-                                    //              landmarkDetection.setType("LANDMARK_DETECTION");
-                                    //              landmarkDetection.setMaxResults(10);
-                                    //              add(landmarkDetection);
-
-                                    //              Feature logoDetection = new Feature();
-                                    //              logoDetection.setType("LOGO_DETECTION");
-                                    //              logoDetection.setMaxResults(10);
-                                    //              add(logoDetection);
-
-                                    //              Feature faceDetection = new Feature();
-                                    //              faceDetection.setType("FACE_DETECTION");
-                                    //              faceDetection.setMaxResults(10);
-                                    //              add(faceDetection);
-
-                                    //              Feature imageProperties = new Feature();
-                                    //              imageProperties.setType("IMAGE_PROPERTIES");
-                                    //              imageProperties.setMaxResults(10);
-                                    //              add(imageProperties);
-
                                     Feature webDetection = new Feature();
                                     webDetection.setType("WEB_DETECTION");
                                     webDetection.setMaxResults(10);
@@ -174,8 +142,6 @@ public class CloudVision {
 
                 protected void onPostExecute(String result) {
                     log.warning("post execute");
-//                reesultTextView.setText(result);
-
                 }
             }.execute().get();
         }
@@ -195,115 +161,22 @@ public class CloudVision {
     private static String convertResponseToString(BatchAnnotateImagesResponse response) {
         String message = "";
         List<EntityAnnotation> annotations;
-        log.warning(String.valueOf(response.getResponses().size()));
-//        objectsDetected= new ArrayList<>();
         for(int i=0; i<response.getResponses().size(); i++){
             AnnotateImageResponse annotateImageResponse = response.getResponses().get(i);
-//            message += "\n___\n# WEB DETECTION \n";
             WebDetection webDetection = annotateImageResponse.getWebDetection();
             if (webDetection != null) {
                 List<WebEntity> webEntities = webDetection.getWebEntities();
                 if (webEntities != null) {
-//                    message += "\n§ Web Entities:\n";
                     for (WebEntity webEntity :
                             webEntities) {
-//                        message += String.format(Locale.US, "> %.3f: %s ", webEntity.getScore(), webEntity.getDescription());
                         log.warning(String.valueOf(webEntity.getScore()));
-                        Double doubleScore=Double.valueOf(webEntity.getScore());
-                        if(doubleScore.compareTo(0.5)>0) {
-//                            objectsDetected.add(webEntity.getDescription());
-                            message+= webEntity.getDescription()+",";
+                        Double doubleScore = Double.valueOf(webEntity.getScore());
+                        if (doubleScore.compareTo(0.5) > 0) {
+                            message += webEntity.getDescription() + ",";
                         }
                     }
                 }
-
-//                List<WebImage> fullMatchingImages = webDetection.getFullMatchingImages();
-//                if (fullMatchingImages != null) {
-//                    message += "\n§ Full Matching Images:\n";
-//                    for (WebImage fullMatchingImage :
-//                            fullMatchingImages) {
-////          message += String.format(Locale.US, "> %s \n", fullMatchingImage.getUrl());
-//                    }
-//                }
-//
-//                List<WebImage> partialMatchingImages = webDetection.getPartialMatchingImages();
-//                if (partialMatchingImages != null) {
-//                    message += "\n§ Partial Matching Images\n";
-//                    for (WebImage partialMatchingImage :
-//                            partialMatchingImages) {
-////          message += String.format(Locale.US, "> %s \n", partialMatchingImage.getUrl());
-//                    }
-//                }
-//
-//                List<WebImage> visuallySimilarImages = webDetection.getVisuallySimilarImages();
-//                if (visuallySimilarImages != null) {
-//                    message += "\n§ Visually Similar Images\n";
-//                    for (WebImage visuallySimilarImage :
-//                            visuallySimilarImages) {
-////          message += String.format(Locale.US, "> %s \n", visuallySimilarImage.getUrl());
-//                    }
-//                }
-//
-//                List<WebPage> pagesWithMatchingImages = webDetection.getPagesWithMatchingImages();
-//                if (pagesWithMatchingImages != null) {
-//                    message += "\n§ Pages With Matching Images\n";
-//                    for (WebPage pageWithMatchingImage :
-//                            pagesWithMatchingImages) {
-////          message += String.format(Locale.US, "> %s \n", pageWithMatchingImage.getUrl());
-//                    }
-//                }
             }
-
-//            message += "\n___\n# TEXT\n";
-//            annotations = annotateImageResponse.getTextAnnotations();
-//            if (annotations != null) {
-//                message += String.format(Locale.US, "> Locale: %s.\n%s\n", annotations.get(0).getLocale(), annotations.get(0).getDescription());
-//            } else {
-//                message += "nothing\n";
-//            }
-//
-//            message += "\n___\n# LANDMARKS\n";
-//            annotations = annotateImageResponse.getLandmarkAnnotations();
-//            if (annotations != null) {
-//                for (EntityAnnotation annotation : annotations) {
-//                    message += String.format(Locale.US, "> %.3f: %s (%s) \n", annotation.getScore(), annotation.getDescription(), annotation.getLocations());
-//                }
-//            } else {
-//                message += "nothing\n";
-//            }
-//
-//            message += "\n___\n# LOGOS\n";
-//            annotations = annotateImageResponse.getLogoAnnotations();
-//            if (annotations != null) {
-//                for (EntityAnnotation annotation : annotations) {
-//                    message += String.format(Locale.US, "%.3f: %s \n", annotation.getScore(), annotation.getDescription());
-//                }
-//            } else {
-//                message += "nothing\n";
-//            }
-//
-//            message += "\n___\n# FACES\n";
-//            List<FaceAnnotation> faceAnnotations = annotateImageResponse.getFaceAnnotations();
-//            if (faceAnnotations != null) {
-//                for (FaceAnnotation annotation : faceAnnotations) {
-//                    message += String.format(Locale.US, "> position:%s anger:%s joy:%s surprise:%s headwear:%s \n",
-//                            annotation.getBoundingPoly(),
-//                            annotation.getAngerLikelihood(),
-//                            annotation.getJoyLikelihood(),
-//                            annotation.getSurpriseLikelihood(),
-//                            annotation.getHeadwearLikelihood());
-//                }
-//            } else {
-//                message += "nothing\n";
-//            }
-//
-//            message += "\n___\n# IMAGE PROPERTIES:\n\n";
-//            ImageProperties imagePropertiesAnnotation = annotateImageResponse.getImagePropertiesAnnotation();
-//            if (imagePropertiesAnnotation != null) {
-//                message += String.format(Locale.US, "> %s \n", imagePropertiesAnnotation.getDominantColors());
-//            } else {
-//                message += "nothing";
-//            }
         }
 
 

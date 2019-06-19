@@ -526,7 +526,7 @@ public class MainActivity extends AppCompatActivity {
                   for (int i = 0; i < arrayRecipes.length(); i++) {
                     JSONObject recipeJson=arrayRecipes.getJSONObject(i);
                     Gson gson = new Gson();
-                    
+
                     Object r=recipeJson.get("recipe");
                     Recipe contact = gson.fromJson(r.toString(), Recipe.class);
                     log.warning(arrayRecipes.getJSONObject(i).toString());
