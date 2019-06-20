@@ -39,8 +39,8 @@ public class RecipeList extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_list);
         Intent intent = getIntent();
         String foodWords = intent.getStringExtra("foodWords");
-        log.warning("wqrds receied:"+foodWords);
-//        consumeRecipeAPI(foodWords);
+        log.warning("words receied///////////////////////////////////:"+foodWords);
+        consumeRecipeAPI(foodWords);
     }
 
     public void consumeRecipeAPI(String Foodwords){

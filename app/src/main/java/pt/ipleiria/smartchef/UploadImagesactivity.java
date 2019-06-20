@@ -1,6 +1,7 @@
 package pt.ipleiria.smartchef;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -28,6 +29,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
@@ -52,6 +54,7 @@ import com.google.api.services.vision.v1.model.WebImage;
 import com.google.api.services.vision.v1.model.WebPage;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,6 +70,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
 import pt.ipleiria.smartchef.adapter.CustomAdapter;
@@ -100,6 +106,9 @@ public class UploadImagesactivity extends AppCompatActivity {
     private List<String> foodDetected;
     private ListView listView;
     private boolean finished=false;
+    private int wordsNumberFound=0;
+    private int wordsNumberProcessed=0;
+    private String foodWords="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -312,7 +321,7 @@ public class UploadImagesactivity extends AppCompatActivity {
     }
 
     public void callCloudVisionAPI(View view){
-        String foodWords="";
+        foodWords="";
         try {
 //            for(Bitmap bm: bitmapArrayList) {
 //                callCloudVision(bm);
@@ -321,34 +330,42 @@ public class UploadImagesactivity extends AppCompatActivity {
 //            callCloudVision(bitmapArrayList);
             foodDetected = new ArrayList<>();
             List<String> responseArray= CloudVision.callCloudVision(bitmapArrayList,CLOUD_VISION_API_KEY,getPackageName(),ANDROID_PACKAGE_HEADER,getPackageManager(),ANDROID_CERT_HEADER);
+            wordsNumberFound=responseArray.size();
+            log.warning("------------------------------------"+wordsNumberFound);
             for(String s: responseArray){
                 log.warning("word to Taxonomy:"+ s);
-                finished=false;
-                consumeTaxonomyApi(URLEncoder.encode(s,"UTF-8"));
-                waitUntilFinished();
-                finished=false;
+                consumeTaxonomyApi(URLEncoder.encode(s,"UTF-8"), this);
             }
 
+//            while(!waitUntilFinished());
 
-            for(String s: foodDetected){
-                log.warning("word to api recipes:--------:" + s);
-                foodWords=foodWords+","+s;
 
-            }
-            log.warning("foooooooooooood:"+foodWords);
-//            consumeRecipeAPI(foodWords);
+
         }catch (IOException e){
             log.warning(e.getMessage());
         }
-        Intent intent = new Intent(this, RecipeList.class);
-        intent.putExtra("foodWords", foodWords);
-        startActivity(intent);
+
     }
 
-    public void consumeTaxonomyApi(final String word) {
+    public void consumeTaxonomyApi(final String word, final Context context) {
 
-        RequestQueue queue = Volley.newRequestQueue(this);
         String url = "https://api.uclassify.com/v1/uclassify/iab-taxonomy/classify?readkey=BaCk5w4RQ4y2&text="+word;
+
+//        RequestFuture<JSONObject> future = RequestFuture.newFuture();
+//        JsonObjectRequest request = new JsonObjectRequest(url, null, future, future);
+//        RequestQueue requestQueue = Volley.newRequestQueue(this);
+//        requestQueue.add(request);
+//
+//        // esecuzione sincrona della webRequest
+//        try {
+//            // limita la richiesta bloccante a un massimo di 10 secondi, quindi restituisci
+//            // la risposta.
+//            JSONObject jsonObject=future.get(30, TimeUnit.SECONDS);
+//            log.warning("asd:"+ jsonObject.toString());
+//        } catch (InterruptedException | TimeoutException | ExecutionException e) {
+//            e.printStackTrace();
+//        }
+        RequestQueue queue = Volley.newRequestQueue(this);
         log.warning("url to Taxonomy:"+ url);
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
@@ -362,13 +379,15 @@ public class UploadImagesactivity extends AppCompatActivity {
                         try {
 
                         Iterator<String> array= response.keys();
-
+                        String taxonmy="food and drink_";
+//                        taxonmy=URLEncoder.encode(taxonmy,"UTF-8");
                         while (array.hasNext()){
                             String key = array.next();
+//                            key=URLEncoder.encode(key,"UTF-8");
                             Object value = response.get(key);
                             Double d=(Double) value;
 //                            log.warning("key:" + key+ "-"+ String.valueOf(d));
-                            if(d.compareTo(0.4)>0) {
+                            if(d.compareTo(0.4)>0 && key.startsWith(taxonmy)) {
                                 log.warning("***********************key:" + key+ "------------"+ String.valueOf(d));
                                 foodDetected.add(word);
 
@@ -377,7 +396,21 @@ public class UploadImagesactivity extends AppCompatActivity {
                         } catch (Exception e) {
                             log.warning(e.getMessage());
                         }
-                        finished=true;
+                        wordsNumberProcessed++;
+                        log.warning("nuuuuuuuuuuuuuumeeeeerooooo:"+ wordsNumberFound);
+                        if(wordsNumberProcessed==wordsNumberFound){
+                            log.warning("YEEEEEEEEEEEEEEEEEEEEEEEEEEES");
+                            for(String s: foodDetected){
+                                log.warning("word to api recipes:--------:" + s);
+                                foodWords=foodWords+","+s;
+                            }
+                            wordsNumberProcessed=0;
+                            log.warning("foooooooooooood:"+foodWords);
+                            Intent intent = new Intent(context, RecipeList.class);
+                            intent.putExtra("foodWords", foodWords);
+                            startActivity(intent);
+//            consumeRecipeAPI(foodWords);
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -396,7 +429,7 @@ public class UploadImagesactivity extends AppCompatActivity {
             }
         };
         queue.add(request);
-        queue.start();
+
     }
 
 
@@ -408,9 +441,12 @@ public class UploadImagesactivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        if(finished){
+        if(wordsNumberProcessed==wordsNumberFound){
+            log.warning("YEEEEEEEEEEEEEEEEEEEEEEEEEEES");
             return true;
         }
+        log.warning("NOOOOOOOOOOOOOOOOOOOOOO YET");
+        log.warning("words processed: "+ wordsNumberProcessed);
         return false;
     }
 
