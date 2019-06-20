@@ -1,11 +1,16 @@
 package pt.ipleiria.smartchef;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -43,6 +48,12 @@ public class RecipeList extends AppCompatActivity {
         consumeRecipeAPI(foodWords);
     }
 
+    private void loadWebPageRecipe(Recipe recipe){
+        Intent intent = new Intent(this, RecipeWebView.class);
+        intent.putExtra("recipe", recipe);
+        startActivity(intent);
+    }
+
     public void consumeRecipeAPI(String Foodwords){
         log.warning("BOOOOOOOTONNNN");
         EditText et=findViewById(R.id.editText4);
@@ -69,25 +80,32 @@ public class RecipeList extends AppCompatActivity {
                                 Gson gson = new Gson();
                                 Object r=recipeJson.get("recipe");
                                 Recipe contact = gson.fromJson(r.toString(), Recipe.class);
-//                                log.warning(arrayRecipes.getJSONObject(i).toString());
-//                    contact= new Con
                                 recipesList.add(contact);
                             }
                             for (Recipe r : recipesList) {
                                 log.warning(r.getUri());
-//                                log.warning(r.getLabel());
-//                                log.warning(r.getImage());
-//                                for(String s : r.getIngredientLines()){
-//                                    log.warning(s);
-//                                }
                             }
                             CustomAdapter myCustomAdapter = new CustomAdapter(RecipeList.this ,recipesList);
                             listView = findViewById(R.id.listView_contacts);
                             listView.setAdapter(myCustomAdapter);
+                            listView.setOnItemClickListener(new OnItemClickListener()
+                            {
+
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view,
+                                                        int position, long id) {
+                                    // TODO Auto-generated method stub
+                                    Recipe recipe=(Recipe) parent.getItemAtPosition(position);
+                                    loadWebPageRecipe(recipe);
+//                                    Toast.makeText(getApplicationContext(),
+//                                            "Click ListItem Number "+recipe.getUrl(), Toast.LENGTH_LONG)
+//                                            .show();
+                                }
+                            });
                         }catch (JSONException e){
                             log.warning(e.getMessage());
                         }
-//                Gson gson = new Gson();
+
                     }
                 },
 
@@ -109,4 +127,6 @@ public class RecipeList extends AppCompatActivity {
         };
         queue.add(request);
     }
+
+
 }

@@ -8,6 +8,7 @@ public class Recipe implements Serializable {
     private String uri;
     private String label;
     private String image;
+    private String url;
     private List<String> ingredientLines;
     public String getUri() {
         return uri;
@@ -31,6 +32,14 @@ public class Recipe implements Serializable {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public List<String> getIngredientLines() {
