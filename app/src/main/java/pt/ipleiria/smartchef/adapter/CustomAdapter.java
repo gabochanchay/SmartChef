@@ -10,6 +10,7 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.telephony.euicc.DownloadableSubscription;
+import android.text.Html;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import pt.ipleiria.smartchef.R;
 import pt.ipleiria.smartchef.model.Recipe;
@@ -69,9 +71,28 @@ public class CustomAdapter extends BaseAdapter {
 
         Recipe tempRecipe = (Recipe) getItem(position);
         TextView name = (TextView) convertView.findViewById(R.id.recipeName);
+        TextView ingredientsTextView = (TextView) convertView.findViewById(R.id.recipeIngredients);
         ImageView image = (ImageView) convertView.findViewById(R.id.recipeImage);
         name.setText(tempRecipe.getLabel());
+
+        String ingredients="";
+        int n=0;
+        System.out.println("-------------------------"+ingredients.length());
+        for(String s: tempRecipe.getIngredientLines()){
+            n++;
+
+            if(tempRecipe.getIngredientLines().size()==n){
+                ingredients=ingredients+s;
+            }else{
+                ingredients=ingredients+s+",";
+            }
+        }
+        ingredientsTextView.setText(ingredients);
+
         Picasso.get().load(tempRecipe.getImage()).into(image);
+
+
+
         return convertView;
     }
 

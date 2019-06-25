@@ -45,7 +45,19 @@ public class RecipeList extends AppCompatActivity {
         Intent intent = getIntent();
         String foodWords = intent.getStringExtra("foodWords");
         log.warning("words receied///////////////////////////////////:"+foodWords);
-        consumeRecipeAPI(foodWords);
+//        consumeRecipeAPI(foodWords);
+        ArrayList<Recipe> recipesList=new ArrayList<>();
+        Recipe recipe= new Recipe();
+//        recipe.setImage();
+        recipe.setLabel("Pruebaaaaa");
+        ArrayList<String> ingedients=new ArrayList<>();
+        ingedients.add("Chicken");
+        ingedients.add("Tomato");
+        recipe.setIngredientLines(ingedients);
+        recipesList.add(recipe);
+        CustomAdapter myCustomAdapter = new CustomAdapter(RecipeList.this ,recipesList);
+        listView = findViewById(R.id.listView_contacts);
+        listView.setAdapter(myCustomAdapter);
     }
 
     private void loadWebPageRecipe(Recipe recipe){

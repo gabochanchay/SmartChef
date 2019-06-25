@@ -110,13 +110,24 @@ public class UploadImagesactivity extends AppCompatActivity {
     private int wordsNumberProcessed=0;
     private String foodWords="";
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_imagesactivity);
         reesultTextView = findViewById(R.id.resultText);
         bitmapArrayList = new ArrayList<>(4);
+        int w = 100, h = 100;
 
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        Bitmap bmp = Bitmap.createBitmap(w, h, conf);
+        bitmapArrayList.add(bmp);
+        bitmapArrayList.add(bmp);
+        bitmapArrayList.add(bmp);
+        bitmapArrayList.add(bmp);
+
+        findViewById(R.id.loadingPanel).setVisibility(View.INVISIBLE);
     }
 
     public void selectSource(View view){
@@ -204,9 +215,9 @@ public class UploadImagesactivity extends AppCompatActivity {
 //        if(){
 //
 //        }
-        if(bitmapArrayList.size()<4) {
-            bitmapArrayList.add(bitmap);
-        }else{
+//        if(bitmapArrayList.size() < 4) {
+//            bitmapArrayList.add(bitmap);
+//        }else{
             if(imageNumber == 1){
             bitmapArrayList.set(0, bitmap);
         }
@@ -219,7 +230,7 @@ public class UploadImagesactivity extends AppCompatActivity {
         if(imageNumber == 4){
             bitmapArrayList.set(3, bitmap);
         }
-        }
+//        }
     }
 
     @Override
@@ -227,10 +238,7 @@ public class UploadImagesactivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         ImageView imageView = setCorespondingImage();
         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-
             try{
-
-
             Bitmap bitmap = scaleBitmapDown(
                     MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData()),
                     1200);
@@ -245,8 +253,6 @@ public class UploadImagesactivity extends AppCompatActivity {
             Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
 //            uploadImage(photoUri);
             try{
-
-
                 Bitmap bitmap = scaleBitmapDown(
                         MediaStore.Images.Media.getBitmap(getContentResolver(), photoUri),
                         1200);
@@ -257,8 +263,6 @@ public class UploadImagesactivity extends AppCompatActivity {
                 Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
             }
         }
-
-
     }
 
     public Bitmap scaleBitmapDown(Bitmap bitmap, int maxDimension) {
@@ -299,48 +303,26 @@ public class UploadImagesactivity extends AppCompatActivity {
         }
     }
 
-    public void uploadImage(Uri uri) {
-        if (uri != null) {
-            try {
-                // scale the image to save on bandwidth
-
-                Bitmap bitmap = scaleBitmapDown(
-                        MediaStore.Images.Media.getBitmap(getContentResolver(), uri),
-                        1200);
-
-//            callCloudVision(bitmapArrayList);
-
-            } catch (IOException e) {
-                Log.d(TAG, "Image picking failed because " + e.getMessage());
-                Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
-            }
-        } else {
-            Log.d(TAG, "Image picker gave us a null image.");
-            Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
-        }
-    }
-
     public void callCloudVisionAPI(View view){
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
         foodWords="";
         try {
-//            for(Bitmap bm: bitmapArrayList) {
-//                callCloudVision(bm);
-//            }
             objectsDetected = new ArrayList<>();
 //            callCloudVision(bitmapArrayList);
             foodDetected = new ArrayList<>();
             List<String> responseArray= CloudVision.callCloudVision(bitmapArrayList,CLOUD_VISION_API_KEY,getPackageName(),ANDROID_PACKAGE_HEADER,getPackageManager(),ANDROID_CERT_HEADER);
             wordsNumberFound=responseArray.size();
-            log.warning("------------------------------------"+wordsNumberFound);
+            for(String s: responseArray){
+                log.warning("-------------------"+s);
+            }
+            log.warning(String.valueOf(bitmapArrayList.size()));
+//            Toast.makeText(UploadImagesactivity.this, wordsNumberFound,
+//                    Toast.LENGTH_LONG).show();
+//            log.warning("------------------------------------"+wordsNumberFound);
             for(String s: responseArray){
                 log.warning("word to Taxonomy:"+ s);
                 consumeTaxonomyApi(URLEncoder.encode(s,"UTF-8"), this);
             }
-
-//            while(!waitUntilFinished());
-
-
-
         }catch (IOException e){
             log.warning(e.getMessage());
         }
@@ -348,23 +330,7 @@ public class UploadImagesactivity extends AppCompatActivity {
     }
 
     public void consumeTaxonomyApi(final String word, final Context context) {
-
         String url = "https://api.uclassify.com/v1/uclassify/iab-taxonomy/classify?readkey=BaCk5w4RQ4y2&text="+word;
-
-//        RequestFuture<JSONObject> future = RequestFuture.newFuture();
-//        JsonObjectRequest request = new JsonObjectRequest(url, null, future, future);
-//        RequestQueue requestQueue = Volley.newRequestQueue(this);
-//        requestQueue.add(request);
-//
-//        // esecuzione sincrona della webRequest
-//        try {
-//            // limita la richiesta bloccante a un massimo di 10 secondi, quindi restituisci
-//            // la risposta.
-//            JSONObject jsonObject=future.get(30, TimeUnit.SECONDS);
-//            log.warning("asd:"+ jsonObject.toString());
-//        } catch (InterruptedException | TimeoutException | ExecutionException e) {
-//            e.printStackTrace();
-//        }
         RequestQueue queue = Volley.newRequestQueue(this);
         log.warning("url to Taxonomy:"+ url);
         JsonObjectRequest request = new JsonObjectRequest(
@@ -375,9 +341,7 @@ public class UploadImagesactivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
 //                        log.warning(response.toString());
-
                         try {
-
                         Iterator<String> array= response.keys();
                         String taxonmy="food and drink_";
 //                        taxonmy=URLEncoder.encode(taxonmy,"UTF-8");
@@ -409,6 +373,7 @@ public class UploadImagesactivity extends AppCompatActivity {
                             Intent intent = new Intent(context, RecipeList.class);
                             intent.putExtra("foodWords", foodWords);
                             startActivity(intent);
+                            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 //            consumeRecipeAPI(foodWords);
                         }
                     }
@@ -429,26 +394,5 @@ public class UploadImagesactivity extends AppCompatActivity {
             }
         };
         queue.add(request);
-
     }
-
-
-    private boolean waitUntilFinished(){
-        for(int i=1; i<10; i++){
-            try {
-                Thread.sleep(900);
-            }catch (InterruptedException e){
-                e.printStackTrace();
-            }
-        }
-        if(wordsNumberProcessed==wordsNumberFound){
-            log.warning("YEEEEEEEEEEEEEEEEEEEEEEEEEEES");
-            return true;
-        }
-        log.warning("NOOOOOOOOOOOOOOOOOOOOOO YET");
-        log.warning("words processed: "+ wordsNumberProcessed);
-        return false;
-    }
-
-
 }

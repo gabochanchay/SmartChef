@@ -1,6 +1,7 @@
 package pt.ipleiria.smartchef.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Recipe implements Serializable {
@@ -9,7 +10,7 @@ public class Recipe implements Serializable {
     private String label;
     private String image;
     private String url;
-    private List<String> ingredientLines;
+    private ArrayList<String> ingredientLines;
     public String getUri() {
         return uri;
     }
@@ -42,11 +43,11 @@ public class Recipe implements Serializable {
         this.url = url;
     }
 
-    public List<String> getIngredientLines() {
+    public ArrayList<String> getIngredientLines() {
         return ingredientLines;
     }
 
-    public void setIngredientLines(List<String> ingredientLines) {
+    public void setIngredientLines(ArrayList<String> ingredientLines) {
         this.ingredientLines = ingredientLines;
     }
 
