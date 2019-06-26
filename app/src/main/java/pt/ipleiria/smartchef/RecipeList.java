@@ -46,7 +46,7 @@ public class RecipeList extends AppCompatActivity {
         Intent intent = getIntent();
         String foodWords = intent.getStringExtra("foodWords");
         log.warning("words receied///////////////////////////////////:"+foodWords);
-//        consumeRecipeAPI(foodWords);
+        consumeRecipeAPI(foodWords);
 //        ArrayList<Recipe> recipesList=new ArrayList<>();
 //        Recipe recipe= new Recipe();
 ////        recipe.setImage();
@@ -59,6 +59,10 @@ public class RecipeList extends AppCompatActivity {
 //        CustomAdapter myCustomAdapter = new CustomAdapter(RecipeList.this ,recipesList);
 //        listView = findViewById(R.id.listView_contacts);
 //        listView.setAdapter(myCustomAdapter);
+
+    }
+
+    private void validateNumberOfRecipes() {
         if(listView == null){
             Context context = getApplicationContext();
             CharSequence text = "We could not find recipes with the pictures that you upload please try again changing them!";
@@ -67,7 +71,6 @@ public class RecipeList extends AppCompatActivity {
             toast.show();
         }
     }
-
 
 
     private void loadWebPageRecipe(Recipe recipe){
@@ -81,7 +84,7 @@ public class RecipeList extends AppCompatActivity {
         EditText et=findViewById(R.id.editText4);
 //        String food=et.getText().toString();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://api.edamam.com/search?q="+Foodwords+"&app_id=00fef183&app_key=54f40f77cbdd0f866bee7e8d4c7170a3&from=0&to=3&calories=591-722&health=alcohol-free";
+        String url = "https://api.edamam.com/search?q="+Foodwords+"&app_id=00fef183&app_key=54f40f77cbdd0f866bee7e8d4c7170a3&from=0&to=10&calories=591-722&health=alcohol-free";
         log.warning(url);
 //    url = url.concat(foodName);
         JsonObjectRequest request = new JsonObjectRequest(
@@ -112,7 +115,6 @@ public class RecipeList extends AppCompatActivity {
                             listView.setAdapter(myCustomAdapter);
                             listView.setOnItemClickListener(new OnItemClickListener()
                             {
-
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view,
                                                         int position, long id) {
@@ -124,6 +126,7 @@ public class RecipeList extends AppCompatActivity {
 //                                            .show();
                                 }
                             });
+                            validateNumberOfRecipes();
                         }catch (JSONException e){
                             log.warning(e.getMessage());
                         }

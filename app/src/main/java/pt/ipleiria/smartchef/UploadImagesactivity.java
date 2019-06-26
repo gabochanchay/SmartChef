@@ -91,7 +91,9 @@ public class UploadImagesactivity extends AppCompatActivity {
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
     private static final String ANDROID_PACKAGE_HEADER = "X-Android-Package";
     private static final String FOOD_TAXONOMY = "food and drink_";
-
+    private static final String FOOD = "food";
+    private static final String VEGETABLE = "vegetable";
+    private static final String[] WORDS_TO_FILTER= {"food","vegetable"};
     private static final String TAG = UploadImagesactivity.class.getSimpleName();
 
     private int imageNumber=0;
@@ -361,21 +363,7 @@ public class UploadImagesactivity extends AppCompatActivity {
                             log.warning(e.getMessage());
                         }
                         wordsNumberProcessed++;
-                        log.warning("nuuuuuuuuuuuuuumeeeeerooooo:"+ wordsNumberFound);
-                        if(wordsNumberProcessed==wordsNumberFound){
-                            log.warning("YEEEEEEEEEEEEEEEEEEEEEEEEEEES");
-                            for(String s: foodDetected){
-                                log.warning("word to api recipes:--------:" + s);
-                                foodWords=foodWords+","+s;
-                            }
-                            wordsNumberProcessed=0;
-                            log.warning("foooooooooooood:"+foodWords);
-                            Intent intent = new Intent(context, RecipeList.class);
-                            intent.putExtra("foodWords", foodWords);
-                            startActivity(intent);
-                            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-//            consumeRecipeAPI(foodWords);
-                        }
+                        validateEveryWordIsProcesed(context);
                     }
                 },
                 new Response.ErrorListener() {
@@ -394,5 +382,38 @@ public class UploadImagesactivity extends AppCompatActivity {
             }
         };
         queue.add(request);
+    }
+
+    private void validateEveryWordIsProcesed(Context context) {
+        log.warning("nuuuuuuuuuuuuuumeeeeerooooo:"+ wordsNumberFound);
+        if(wordsNumberProcessed==wordsNumberFound){
+            log.warning("YEEEEEEEEEEEEEEEEEEEEEEEEEEES");
+            for(String s: foodDetected){
+                log.warning("word with out filtered::--------:" + s);
+            }
+            filterTypesOfFood(foodDetected);
+            for(String s: foodDetected){
+                log.warning("word to api recipes:--------:" + s);
+                foodWords=foodWords+","+s;
+            }
+            wordsNumberProcessed=0;
+            log.warning("foooooooooooood:"+foodWords);
+            Intent intent = new Intent(this, RecipeList.class);
+            intent.putExtra("foodWords", foodWords);
+            startActivity(intent);
+            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+        }
+    }
+
+    private void filterTypesOfFood(List<String> foods){
+        List<String> foodsAux=new ArrayList<>(foods);
+        for(String s: foodsAux){
+            for(String f: WORDS_TO_FILTER){
+                if(s.toUpperCase().trim().equals(f.toUpperCase())){
+                    foods.remove(s);
+                }
+            }
+        }
+
     }
 }
