@@ -1,6 +1,7 @@
 package pt.ipleiria.smartchef;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -46,19 +47,28 @@ public class RecipeList extends AppCompatActivity {
         String foodWords = intent.getStringExtra("foodWords");
         log.warning("words receied///////////////////////////////////:"+foodWords);
 //        consumeRecipeAPI(foodWords);
-        ArrayList<Recipe> recipesList=new ArrayList<>();
-        Recipe recipe= new Recipe();
-//        recipe.setImage();
-        recipe.setLabel("Pruebaaaaa");
-        ArrayList<String> ingedients=new ArrayList<>();
-        ingedients.add("Chicken");
-        ingedients.add("Tomato");
-        recipe.setIngredientLines(ingedients);
-        recipesList.add(recipe);
-        CustomAdapter myCustomAdapter = new CustomAdapter(RecipeList.this ,recipesList);
-        listView = findViewById(R.id.listView_contacts);
-        listView.setAdapter(myCustomAdapter);
+//        ArrayList<Recipe> recipesList=new ArrayList<>();
+//        Recipe recipe= new Recipe();
+////        recipe.setImage();
+//        recipe.setLabel("Pruebaaaaa");
+//        ArrayList<String> ingedients=new ArrayList<>();
+//        ingedients.add("Chicken");
+//        ingedients.add("Tomato");
+//        recipe.setIngredientLines(ingedients);
+//        recipesList.add(recipe);
+//        CustomAdapter myCustomAdapter = new CustomAdapter(RecipeList.this ,recipesList);
+//        listView = findViewById(R.id.listView_contacts);
+//        listView.setAdapter(myCustomAdapter);
+        if(listView == null){
+            Context context = getApplicationContext();
+            CharSequence text = "We could not find recipes with the pictures that you upload please try again changing them!";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
     }
+
+
 
     private void loadWebPageRecipe(Recipe recipe){
         Intent intent = new Intent(this, RecipeWebView.class);
