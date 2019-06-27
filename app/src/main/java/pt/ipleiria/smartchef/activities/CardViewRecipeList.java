@@ -21,6 +21,7 @@
 package pt.ipleiria.smartchef.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,6 +44,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -57,7 +59,8 @@ public class CardViewRecipeList extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private static String LOG_TAG = "CardViewRecipeList";
-//    ArrayList<Recipe> recipesList=new ArrayList<>();
+
+    ArrayList<Recipe> recipesList=new ArrayList<>();
 
     private static Logger log= Logger.getLogger("log");
 
@@ -65,13 +68,13 @@ public class CardViewRecipeList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_view_recipe);
-//        consumeRecipeAPI(null, this);
+        consumeRecipeAPI(null, this);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new CardViewRecipeAdapter(getDataSet());
+        mAdapter = new CardViewRecipeAdapter(recipesList);
         mRecyclerView.setAdapter(mAdapter);
 
         // Code to Add an item with default animation
@@ -90,8 +93,16 @@ public class CardViewRecipeList extends AppCompatActivity {
             @Override
             public void onItemClick(int position, View v) {
                 Log.i(LOG_TAG, " Clicked on Item " + position);
+//                List<Recipe> recipes=getDataSet();
+                goToDetails(recipesList.get(position));
             }
         });
+    }
+
+    private void goToDetails(Recipe recipe){
+        Intent intent = new Intent(this, RecipeDetails.class);
+        intent.putExtra("recipe", recipe);
+        startActivity(intent);
     }
 
     public void consumeRecipeAPI(String Foodwords, final Context context){
@@ -114,7 +125,7 @@ public class CardViewRecipeList extends AppCompatActivity {
                         try {
                             Object recipes=response.get("hits");
                             JSONArray arrayRecipes=response.getJSONArray("hits");
-                            ArrayList<Recipe> recipesList=new ArrayList<>();
+//                            ArrayList<Recipe> recipesList=new ArrayList<>();
                             for (int i = 0; i < arrayRecipes.length(); i++) {
                                 JSONObject recipeJson=arrayRecipes.getJSONObject(i);
                                 Gson gson = new Gson();
@@ -125,7 +136,7 @@ public class CardViewRecipeList extends AppCompatActivity {
                             for (Recipe r : recipesList) {
                                 log.warning(r.getUri());
                             }
-
+                            mAdapter.notifyDataSetChanged();
 //                            validateNumberOfRecipes();
                         }catch (JSONException e){
 //                            log.warning(e.getMessage());
@@ -159,6 +170,23 @@ public class CardViewRecipeList extends AppCompatActivity {
             Recipe obj = new Recipe();
             obj.setLabel("Prueba"+index);
             obj.setImage("https://www.edamam.com/web-img/6fb/6fb01301f56533a5a880f9ee072b7cb2");
+            ArrayList<String> ingredients=new ArrayList<>();
+            ingredients.add("Ingredient 1");
+            ingredients.add("Ingredient 2");
+            ingredients.add("Ingredient 3");
+            ingredients.add("Ingredient 4");
+            ingredients.add("Ingredient 5");
+            ingredients.add("Ingredient 6");
+            ingredients.add("Ingredient 1");
+            ingredients.add("Ingredient 1");
+            ingredients.add("Ingredient 1");
+            ingredients.add("Ingredient 1");
+            ingredients.add("Ingredient 1");
+            ingredients.add("Ingredient 1");
+            ingredients.add("Ingredient 1");
+            ingredients.add("Ingredient 1");
+            obj.setIngredientLines(ingredients);
+
             results.add(index, obj);
         }
         return results;
