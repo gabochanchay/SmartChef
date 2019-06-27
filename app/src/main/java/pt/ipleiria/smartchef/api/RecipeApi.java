@@ -1,7 +1,6 @@
 package pt.ipleiria.smartchef.api;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -14,9 +13,6 @@ import org.json.JSONArray;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import pt.ipleiria.smartchef.MainActivity;
-import pt.ipleiria.smartchef.model.Recipe;
 
 public class RecipeApi {
 

@@ -1,4 +1,4 @@
-package pt.ipleiria.smartchef;
+package pt.ipleiria.smartchef.activities;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;

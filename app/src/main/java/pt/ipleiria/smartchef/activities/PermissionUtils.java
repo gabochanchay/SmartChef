@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pt.ipleiria.smartchef;
+package pt.ipleiria.smartchef.activities;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;

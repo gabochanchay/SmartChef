@@ -1,17 +1,11 @@
-package pt.ipleiria.smartchef;
+package pt.ipleiria.smartchef.activities;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,61 +24,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import pt.ipleiria.smartchef.R;
 import pt.ipleiria.smartchef.adapter.CustomAdapter;
 import pt.ipleiria.smartchef.model.Recipe;
 
-public class RecipeList extends AppCompatActivity {
+public class SearchRecipe extends AppCompatActivity {
 
     private static Logger log= Logger.getLogger("log");
-
     private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipe_list);
-        Intent intent = getIntent();
-        String foodWords = intent.getStringExtra("foodWords");
-        log.warning("words receied///////////////////////////////////:"+foodWords);
-        consumeRecipeAPI(foodWords);
-//        ArrayList<Recipe> recipesList=new ArrayList<>();
-//        Recipe recipe= new Recipe();
-////        recipe.setImage();
-//        recipe.setLabel("Pruebaaaaa");
-//        ArrayList<String> ingedients=new ArrayList<>();
-//        ingedients.add("Chicken");
-//        ingedients.add("Tomato");
-//        recipe.setIngredientLines(ingedients);
-//        recipesList.add(recipe);
-//        CustomAdapter myCustomAdapter = new CustomAdapter(RecipeList.this ,recipesList);
-//        listView = findViewById(R.id.listView_contacts);
-//        listView.setAdapter(myCustomAdapter);
-
+        setContentView(R.layout.activity_search_recipe);
     }
 
-    private void validateNumberOfRecipes() {
-        if(listView == null){
-            Context context = getApplicationContext();
-            CharSequence text = "We could not find recipes with the pictures that you upload please try again changing them!";
-            int duration = Toast.LENGTH_LONG;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-        }
-    }
-
-
-    private void loadWebPageRecipe(Recipe recipe){
-        Intent intent = new Intent(this, RecipeWebView.class);
-        intent.putExtra("recipe", recipe);
-        startActivity(intent);
-    }
-
-    public void consumeRecipeAPI(String Foodwords){
+    public void consumeApi(View view){
         log.warning("BOOOOOOOTONNNN");
         EditText et=findViewById(R.id.editText4);
-//        String food=et.getText().toString();
+        String food=et.getText().toString();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://api.edamam.com/search?q="+Foodwords+"&app_id=00fef183&app_key=54f40f77cbdd0f866bee7e8d4c7170a3&from=0&to=10&calories=591-722&health=alcohol-free";
+        String url = "https://api.edamam.com/search?q="+food+"&app_id=00fef183&app_key=54f40f77cbdd0f866bee7e8d4c7170a3&from=0&to=3&calories=591-722&health=alcohol-free";
         log.warning(url);
 //    url = url.concat(foodName);
         JsonObjectRequest request = new JsonObjectRequest(
@@ -94,7 +54,7 @@ public class RecipeList extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-//                        Log.d("Response", response.toString());
+                        Log.d("Response", response.toString());
 //                log.warning(response.toString());
                         try {
                             Object recipes=response.get("hits");
@@ -105,35 +65,27 @@ public class RecipeList extends AppCompatActivity {
                                 Gson gson = new Gson();
                                 Object r=recipeJson.get("recipe");
                                 Recipe contact = gson.fromJson(r.toString(), Recipe.class);
+                                log.warning(arrayRecipes.getJSONObject(i).toString());
+//                    contact= new Con
                                 recipesList.add(contact);
                             }
                             for (Recipe r : recipesList) {
                                 log.warning(r.getUri());
+//                                log.warning(r.getLabel());
+//                                log.warning(r.getImage());
+//                                for(String s : r.getIngredientLines()){
+//                                    log.warning(s);
+//                                }
                             }
-                            CustomAdapter myCustomAdapter = new CustomAdapter(RecipeList.this ,recipesList);
+                            CustomAdapter myCustomAdapter = new CustomAdapter(SearchRecipe.this ,recipesList);
                             listView = findViewById(R.id.listView_contacts);
                             listView.setAdapter(myCustomAdapter);
-                            listView.setOnItemClickListener(new OnItemClickListener()
-                            {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view,
-                                                        int position, long id) {
-                                    // TODO Auto-generated method stub
-                                    Recipe recipe=(Recipe) parent.getItemAtPosition(position);
-                                    loadWebPageRecipe(recipe);
-//                                    Toast.makeText(getApplicationContext(),
-//                                            "Click ListItem Number "+recipe.getUrl(), Toast.LENGTH_LONG)
-//                                            .show();
-                                }
-                            });
-                            validateNumberOfRecipes();
                         }catch (JSONException e){
                             log.warning(e.getMessage());
                         }
-
+//                Gson gson = new Gson();
                     }
                 },
-
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
@@ -152,6 +104,4 @@ public class RecipeList extends AppCompatActivity {
         };
         queue.add(request);
     }
-
-
 }

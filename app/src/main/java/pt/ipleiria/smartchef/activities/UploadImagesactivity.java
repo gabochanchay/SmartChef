@@ -1,4 +1,4 @@
-package pt.ipleiria.smartchef;
+package pt.ipleiria.smartchef.activities;
 
 import android.Manifest;
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -16,9 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,55 +25,20 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.services.vision.v1.Vision;
-import com.google.api.services.vision.v1.VisionRequest;
-import com.google.api.services.vision.v1.VisionRequestInitializer;
-import com.google.api.services.vision.v1.model.AnnotateImageRequest;
-import com.google.api.services.vision.v1.model.AnnotateImageResponse;
-import com.google.api.services.vision.v1.model.BatchAnnotateImagesRequest;
-import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
-import com.google.api.services.vision.v1.model.EntityAnnotation;
-import com.google.api.services.vision.v1.model.FaceAnnotation;
-import com.google.api.services.vision.v1.model.Feature;
-import com.google.api.services.vision.v1.model.Image;
-import com.google.api.services.vision.v1.model.ImageProperties;
-import com.google.api.services.vision.v1.model.WebDetection;
-import com.google.api.services.vision.v1.model.WebEntity;
-import com.google.api.services.vision.v1.model.WebImage;
-import com.google.api.services.vision.v1.model.WebPage;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
-import pt.ipleiria.smartchef.adapter.CustomAdapter;
-import pt.ipleiria.smartchef.model.Recipe;
-import pt.ipleiria.smartchef.util.CloudVision;
+import pt.ipleiria.smartchef.R;
 
 public class UploadImagesactivity extends AppCompatActivity {
 
@@ -307,27 +268,30 @@ public class UploadImagesactivity extends AppCompatActivity {
 
     public void callCloudVisionAPI(View view){
         findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
-        foodWords="";
-        try {
-            objectsDetected = new ArrayList<>();
-//            callCloudVision(bitmapArrayList);
-            foodDetected = new ArrayList<>();
-            List<String> responseArray= CloudVision.callCloudVision(bitmapArrayList,CLOUD_VISION_API_KEY,getPackageName(),ANDROID_PACKAGE_HEADER,getPackageManager(),ANDROID_CERT_HEADER);
-            wordsNumberFound=responseArray.size();
-            for(String s: responseArray){
-                log.warning("-------------------"+s);
-            }
-            log.warning(String.valueOf(bitmapArrayList.size()));
-//            Toast.makeText(UploadImagesactivity.this, wordsNumberFound,
-//                    Toast.LENGTH_LONG).show();
-//            log.warning("------------------------------------"+wordsNumberFound);
-            for(String s: responseArray){
-                log.warning("word to Taxonomy:"+ s);
-                consumeTaxonomyApi(URLEncoder.encode(s,"UTF-8"), this);
-            }
-        }catch (IOException e){
-            log.warning(e.getMessage());
-        }
+//        foodWords="";
+//        try {
+//            objectsDetected = new ArrayList<>();
+////            callCloudVision(bitmapArrayList);
+//            foodDetected = new ArrayList<>();
+//            List<String> responseArray= CloudVision.callCloudVision(bitmapArrayList,CLOUD_VISION_API_KEY,getPackageName(),ANDROID_PACKAGE_HEADER,getPackageManager(),ANDROID_CERT_HEADER);
+//            wordsNumberFound=responseArray.size();
+//            for(String s: responseArray){
+//                log.warning("-------------------"+s);
+//            }
+//            log.warning(String.valueOf(bitmapArrayList.size()));
+////            Toast.makeText(UploadImagesactivity.this, wordsNumberFound,
+////                    Toast.LENGTH_LONG).show();
+////            log.warning("------------------------------------"+wordsNumberFound);
+//            for(String s: responseArray){
+//                log.warning("word to Taxonomy:"+ s);
+//                consumeTaxonomyApi(URLEncoder.encode(s,"UTF-8"), this);
+//            }
+//        }catch (IOException e){
+//            log.warning(e.getMessage());
+//        }
+        Intent intent = new Intent(this, CardViewRecipeList.class);
+        intent.putExtra("foodWords", foodWords);
+        startActivity(intent);
 
     }
 
@@ -363,13 +327,13 @@ public class UploadImagesactivity extends AppCompatActivity {
                             log.warning(e.getMessage());
                         }
                         wordsNumberProcessed++;
-                        validateEveryWordIsProcesed(context);
+                        validateEveryWordIsProcesed();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Response", error.getMessage());
+//                        Log.e("Response", error.getMessage());
 
                     }
                 }
@@ -384,7 +348,7 @@ public class UploadImagesactivity extends AppCompatActivity {
         queue.add(request);
     }
 
-    private void validateEveryWordIsProcesed(Context context) {
+    private void validateEveryWordIsProcesed() {
         log.warning("nuuuuuuuuuuuuuumeeeeerooooo:"+ wordsNumberFound);
         if(wordsNumberProcessed==wordsNumberFound){
             log.warning("YEEEEEEEEEEEEEEEEEEEEEEEEEEES");
@@ -398,7 +362,8 @@ public class UploadImagesactivity extends AppCompatActivity {
             }
             wordsNumberProcessed=0;
             log.warning("foooooooooooood:"+foodWords);
-            Intent intent = new Intent(this, RecipeList.class);
+//            Intent intent = new Intent(this, RecipeList.class);
+            Intent intent = new Intent(this, CardViewRecipeList.class);
             intent.putExtra("foodWords", foodWords);
             startActivity(intent);
             findViewById(R.id.loadingPanel).setVisibility(View.GONE);

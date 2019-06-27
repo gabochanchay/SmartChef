@@ -31,7 +31,7 @@
  *
  */
 
-package pt.ipleiria.smartchef;
+package pt.ipleiria.smartchef.activities;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -61,7 +61,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -86,8 +85,6 @@ import com.google.api.services.vision.v1.model.WebEntity;
 import com.google.api.services.vision.v1.model.WebImage;
 import com.google.api.services.vision.v1.model.WebPage;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -103,7 +100,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import pt.ipleiria.smartchef.api.RecipeApi;
+import pt.ipleiria.smartchef.R;
 import pt.ipleiria.smartchef.model.Recipe;
 
 

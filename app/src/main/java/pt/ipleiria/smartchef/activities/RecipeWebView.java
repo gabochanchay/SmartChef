@@ -1,10 +1,11 @@
-package pt.ipleiria.smartchef;
+package pt.ipleiria.smartchef.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.WebView;
 
+import pt.ipleiria.smartchef.R;
 import pt.ipleiria.smartchef.model.Recipe;
 
 public class RecipeWebView extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package pt.ipleiria.smartchef.util;
+package pt.ipleiria.smartchef.api;
 
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -25,16 +25,12 @@ import com.google.api.services.vision.v1.model.WebEntity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
-import pt.ipleiria.smartchef.PackageManagerUtils;
-import pt.ipleiria.smartchef.R;
-import pt.ipleiria.smartchef.UploadImagesactivity;
+import pt.ipleiria.smartchef.activities.PackageManagerUtils;
 
 public class CloudVision {
 

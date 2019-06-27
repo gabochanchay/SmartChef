@@ -1,4 +1,4 @@
-package pt.ipleiria.smartchef;
+package pt.ipleiria.smartchef.activities;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -29,6 +29,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
+
+import pt.ipleiria.smartchef.R;
 
 import static com.google.android.gms.common.api.GoogleApiClient.*;
 
