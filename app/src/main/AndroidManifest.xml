@@ -20,11 +20,6 @@
         android:label="SmartChef"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".AddActivity"
-            android:label="@string/title_activity_add"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ImagesActivity" />
         <activity android:name=".activities.RecipeDetails" />
         <activity android:name=".activities.RecipeWebView" />
         <activity android:name=".activities.RecipeList" />

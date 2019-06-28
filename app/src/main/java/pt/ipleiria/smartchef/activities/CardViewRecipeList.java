@@ -85,13 +85,19 @@ public class CardViewRecipeList extends AppCompatActivity {
         Intent intent = getIntent();
         String foodWords = intent.getStringExtra("foodWords");
         log.warning("words receied///////////////////////////////////:"+foodWords);
+        if(foodWords==null || foodWords.isEmpty()){
+            showErrorMessage();
+            return;
+        }
         textView = findViewById(R.id.processing_text);
         textView.setText(".........Processsing...........");
         imageView = findViewById(R.id.sad_face);
         Picasso.get().load("https://image.flaticon.com/icons/png/512/15/15135.png").into(imageView);
         imageView.setVisibility(View.GONE);
+
+
 //        if(!foodWords.isEmpty()) {
-            consumeRecipeAPI("asdasdasas", this);
+            consumeRecipeAPI(foodWords, this);
 //        }
         // Code to Add an item with default animation
         //((CardViewRecipeAdapter) mAdapter).addItem(obj, index);

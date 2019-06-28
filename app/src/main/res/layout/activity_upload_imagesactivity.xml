@@ -133,6 +133,7 @@
         android:onClick="callCloudVisionAPI"
         android:text="Get Recipes"
         android:layout_centerInParent="true"
+
         app:layout_constraintBottom_toTopOf="@+id/resultText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

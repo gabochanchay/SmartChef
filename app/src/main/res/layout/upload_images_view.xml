@@ -6,10 +6,66 @@
     android:layout_height="match_parent"
     tools:context=".activities.UploadImagesActivity">
 
+    <!--<android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#3F51B5">
+
+    </android.support.v7.widget.Toolbar>-->
+
+    <Button
+        android:id="@+id/getRecipes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/shape"
+        android:backgroundTint="#03A9F4"
+        android:text="@string/get_recipes"
+        android:onClick="callImageReconition"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/colorPrimary" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/images_recycler_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:paddingTop="55dp"
         android:scrollbars="vertical"/>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:onClick="addImage"
+        android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="#3F51B5"
+        app:elevation="0dp" />
+
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+
+    </RelativeLayout>
+
+    <!--<android.support.design.widget.FloatingActionButton
+        android:id="@+id/getRecipesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:onClick="callImageReconition"
+        app:backgroundTint="#3F51B5"
+        app:srcCompat="@drawable/quantum_ic_search_grey600_24" />-->
 
 </RelativeLayout>

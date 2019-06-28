@@ -22,6 +22,7 @@ package pt.ipleiria.smartchef.adapter;
 
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,20 +51,25 @@ public class CardImageAdapter extends RecyclerView
     public static class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
             .OnClickListener {
-        TextView label;
 //        TextView dateTime;
         ImageView image;
-        Button selectImageButton;
+        FloatingActionButton selectImageButton;
+        FloatingActionButton deleteButton;
         public DataObjectHolder(View itemView) {
             super(itemView);
-            label = (TextView) itemView.findViewById(R.id.test);
-//            dateTime = (TextView) itemView.findViewById(R.id.textView2);
             image = (ImageView) itemView.findViewById(R.id.image_to_upload);
             selectImageButton = itemView.findViewById(R.id.upload_image_button);
+            deleteButton = itemView.findViewById(R.id.delete_item_button);
             selectImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     myClickListener.onButtonClick(v, getAdapterPosition());
+                }
+            });
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    myClickListener.onDeleteButtonClick(v, getAdapterPosition());
                 }
             });
             Log.i(LOG_TAG, "Adding Listener");
@@ -98,7 +104,6 @@ public class CardImageAdapter extends RecyclerView
     public void onBindViewHolder(DataObjectHolder holder, int position) {
 
         UploadImage uploadImage=mDataset.get(position);
-        holder.label.setText(uploadImage.getUrl());
 //        uploadImage.setImageView(holder.image);
       Picasso.get().load(uploadImage.getUrl()).into(holder.image);
 //        holder.image.setImageBitmap(uploadImage.getBitmap());
@@ -122,7 +127,8 @@ public class CardImageAdapter extends RecyclerView
 
     public interface MyClickListener {
         public void onItemClick(int position, View v);
-        void onButtonClick(View v, int position);
+        public void onButtonClick(View v, int position);
+        public void onDeleteButtonClick(View v, int position);
     }
 
 

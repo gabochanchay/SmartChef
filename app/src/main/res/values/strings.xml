@@ -19,4 +19,6 @@
     <string name="title_activity_images">ImagesActivity</string>
     <string name="title_activity_add">AddActivity</string>
     <string name="charge_image">Charge Image</string>
+    <string name="get_recipes">Get Recipes</string>
+    <string name="delete_images">Delete Image</string>
 </resources>

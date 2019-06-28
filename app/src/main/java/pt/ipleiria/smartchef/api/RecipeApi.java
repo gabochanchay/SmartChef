@@ -31,13 +31,6 @@ public class RecipeApi {
                     public void onResponse(JSONArray response) {
                         Log.d("Response", response.toString());
                         log.warning(response.toString());
-                        Gson gson = new Gson();
-//                        Recipe[] contacts = gson.fromJson(
-//                                response.toString(), Recipe[].class);
-//                        for (Contact contact : contacts) {
-//                            Singleton.getInstance().getAgenda().addContact(contact);
-//                        }
-//                        adapter.notifyDataSetChanged();
                     }
                 },
                 new Response.ErrorListener() {
