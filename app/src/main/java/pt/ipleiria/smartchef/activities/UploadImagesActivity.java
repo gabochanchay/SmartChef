@@ -75,6 +75,7 @@ public class UploadImagesActivity extends AppCompatActivity {
     private static final String TAG = UploadImagesactivityOldVersion.class.getSimpleName();
 
     private UploadImage imageSelected=null;
+    private ArrayList<UploadImage> images=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +87,8 @@ public class UploadImagesActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new CardImageAdapter(getDataSet());
+        images = getDataSet();
+        mAdapter = new CardImageAdapter(images);
         mRecyclerView.setAdapter(mAdapter);
 
 //        imageView.setVisibility(View.GONE);
@@ -115,7 +117,7 @@ public class UploadImagesActivity extends AppCompatActivity {
 
             @Override
             public void onButtonClick(View v, int position) {
-                imageSelected = getDataSet().get(position);
+                imageSelected = images.get(position);
                 log.warning("position:---------"+position);
                 selectSource();
             }
@@ -175,6 +177,15 @@ public class UploadImagesActivity extends AppCompatActivity {
         return null;
     }
 
+
+    private void modifyImages(UploadImage image){
+        for(UploadImage i: images) {
+            if (image.getId()==i.getId()) {
+                i.setUrl(image.getUrl());
+            }
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -186,8 +197,10 @@ public class UploadImagesActivity extends AppCompatActivity {
                         MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData()),
                         1200);
 //                imageView.setImageBitmap(bitmap);
-                log.warning(imageSelected.toString());
-                imageSelected.setUrl("https://www.edamam.com/web-img/6fb/6fb01301f56533a5a880f9ee072b7cb2");
+//                mAdapter.
+
+                imageSelected.setUrl(data.getData().toString());
+                modifyImages(imageSelected);
 //                imageSelected.setBitmap(bitmap);
 //                imageSelected.setImageView();
 //                imageSelected.getImageView().setImageBitmap(bitmap);
@@ -262,7 +275,8 @@ public class UploadImagesActivity extends AppCompatActivity {
             Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
             Bitmap bmp = Bitmap.createBitmap(w, h, conf);
             obj.setBitmap(bmp);
-            obj.setUrl("https://www.edamam.com/web-img/6fb/6fb01301f56533a5a880f9ee072b7cb2");
+            obj.setId(index);
+//            obj.setUrl("https://www.edamam.com/web-img/6fb/6fb01301f56533a5a880f9ee072b7cb2");
             results.add(index, obj);
         }
         return results;

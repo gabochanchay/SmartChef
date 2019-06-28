@@ -11,6 +11,7 @@ public class UploadImage implements Serializable {
     private String url;
     private Bitmap bitmap;
     private ImageView imageView;
+    private int id;
 
     public String getUrl() {
         return url;
@@ -34,5 +35,13 @@ public class UploadImage implements Serializable {
 
     public void setImageView(ImageView imageView) {
         this.imageView = imageView;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
