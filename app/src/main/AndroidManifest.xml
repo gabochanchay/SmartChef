@@ -20,6 +20,7 @@
         android:label="SmartChef"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activities.RecipeDetails"></activity>
         <activity android:name=".activities.RecipeWebView" />
         <activity android:name=".activities.RecipeList" />
         <!--
@@ -49,7 +50,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.SearchRecipe" />
-        <activity android:name=".activities.CardViewRecipeList"/>
+        <activity android:name=".activities.CardViewRecipeList" />
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"

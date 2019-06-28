@@ -31,14 +31,18 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import pt.ipleiria.smartchef.R;
+import pt.ipleiria.smartchef.api.CloudVision;
 
 public class UploadImagesactivity extends AppCompatActivity {
 
@@ -54,7 +58,7 @@ public class UploadImagesactivity extends AppCompatActivity {
     private static final String FOOD_TAXONOMY = "food and drink_";
     private static final String FOOD = "food";
     private static final String VEGETABLE = "vegetable";
-    private static final String[] WORDS_TO_FILTER= {"food","vegetable"};
+    private static final String[] WORDS_TO_FILTER= {"food","vegetable","gizzards"};
     private static final String TAG = UploadImagesactivity.class.getSimpleName();
 
     private int imageNumber=0;
@@ -72,7 +76,7 @@ public class UploadImagesactivity extends AppCompatActivity {
     private int wordsNumberFound=0;
     private int wordsNumberProcessed=0;
     private String foodWords="";
-
+    private Bitmap bmp;
 
 
     @Override
@@ -84,7 +88,7 @@ public class UploadImagesactivity extends AppCompatActivity {
         int w = 100, h = 100;
 
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-        Bitmap bmp = Bitmap.createBitmap(w, h, conf);
+        bmp = Bitmap.createBitmap(w, h, conf);
         bitmapArrayList.add(bmp);
         bitmapArrayList.add(bmp);
         bitmapArrayList.add(bmp);
@@ -267,32 +271,49 @@ public class UploadImagesactivity extends AppCompatActivity {
     }
 
     public void callCloudVisionAPI(View view){
-        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
-//        foodWords="";
-//        try {
-//            objectsDetected = new ArrayList<>();
-////            callCloudVision(bitmapArrayList);
-//            foodDetected = new ArrayList<>();
-//            List<String> responseArray= CloudVision.callCloudVision(bitmapArrayList,CLOUD_VISION_API_KEY,getPackageName(),ANDROID_PACKAGE_HEADER,getPackageManager(),ANDROID_CERT_HEADER);
-//            wordsNumberFound=responseArray.size();
-//            for(String s: responseArray){
-//                log.warning("-------------------"+s);
-//            }
-//            log.warning(String.valueOf(bitmapArrayList.size()));
-////            Toast.makeText(UploadImagesactivity.this, wordsNumberFound,
-////                    Toast.LENGTH_LONG).show();
-////            log.warning("------------------------------------"+wordsNumberFound);
-//            for(String s: responseArray){
-//                log.warning("word to Taxonomy:"+ s);
-//                consumeTaxonomyApi(URLEncoder.encode(s,"UTF-8"), this);
-//            }
-//        }catch (IOException e){
-//            log.warning(e.getMessage());
-//        }
-        Intent intent = new Intent(this, CardViewRecipeList.class);
-        intent.putExtra("foodWords", foodWords);
-        startActivity(intent);
+        boolean empty=validateImages();
+        if(empty){
+            CharSequence text = "Please upload at least one image!";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(this, text, duration);
+            toast.show();
+        }else {
+            findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+            foodWords = "";
+            try {
+                objectsDetected = new ArrayList<>();
+//            callCloudVision(bitmapArrayList);
+                foodDetected = new ArrayList<>();
+                List<String> responseArray = CloudVision.callCloudVision(bitmapArrayList, CLOUD_VISION_API_KEY, getPackageName(), ANDROID_PACKAGE_HEADER, getPackageManager(), ANDROID_CERT_HEADER);
+                wordsNumberFound = responseArray.size();
+                for (String s : responseArray) {
+                    log.warning("-------------------" + s);
+                }
+                log.warning(String.valueOf(bitmapArrayList.size()));
+//            Toast.makeText(UploadImagesactivity.this, wordsNumberFound,
+//                    Toast.LENGTH_LONG).show();
+//            log.warning("------------------------------------"+wordsNumberFound);
+                for (String s : responseArray) {
+                    log.warning("word to Taxonomy:" + s);
+                    consumeTaxonomyApi(URLEncoder.encode(s, "UTF-8"), this);
+                }
+            } catch (IOException e) {
+                log.warning(e.getMessage());
+            }
+            Intent intent = new Intent(this, CardViewRecipeList.class);
+            intent.putExtra("foodWords", foodWords);
+            startActivity(intent);
+        }
+    }
 
+    private boolean validateImages(){
+        boolean empty=true;
+        for(Bitmap b: bitmapArrayList){
+            if(!b.equals(bmp)){
+                empty=false;
+            }
+        }
+        return empty;
     }
 
     public void consumeTaxonomyApi(final String word, final Context context) {
@@ -318,7 +339,7 @@ public class UploadImagesactivity extends AppCompatActivity {
                             Double d=(Double) value;
 //                            log.warning("key:" + key+ "-"+ String.valueOf(d));
                             if(d.compareTo(0.4)>0 && key.startsWith(taxonmy)) {
-                                log.warning("***********************key:" + key+ "------------"+ String.valueOf(d));
+                                log.warning("*****"+word+"******************key:" + key+ "------------"+ String.valueOf(d));
                                 foodDetected.add(word);
 
                             }
@@ -350,13 +371,15 @@ public class UploadImagesactivity extends AppCompatActivity {
 
     private void validateEveryWordIsProcesed() {
         log.warning("nuuuuuuuuuuuuuumeeeeerooooo:"+ wordsNumberFound);
+        log.warning("proceseddddddddddddd:"+ wordsNumberProcessed);
         if(wordsNumberProcessed==wordsNumberFound){
             log.warning("YEEEEEEEEEEEEEEEEEEEEEEEEEEES");
             for(String s: foodDetected){
                 log.warning("word with out filtered::--------:" + s);
             }
-            filterTypesOfFood(foodDetected);
-            for(String s: foodDetected){
+            Set<String> foods=filterTypesOfFood(foodDetected);
+
+            for(String s: foods){
                 log.warning("word to api recipes:--------:" + s);
                 foodWords=foodWords+","+s;
             }
@@ -370,7 +393,7 @@ public class UploadImagesactivity extends AppCompatActivity {
         }
     }
 
-    private void filterTypesOfFood(List<String> foods){
+    private Set<String> filterTypesOfFood(List<String> foods){
         List<String> foodsAux=new ArrayList<>(foods);
         for(String s: foodsAux){
             for(String f: WORDS_TO_FILTER){
@@ -379,6 +402,25 @@ public class UploadImagesactivity extends AppCompatActivity {
                 }
             }
         }
+        ArrayList<String> repeatedWords=new ArrayList<>();
+        Set<String> foodsFinal=new HashSet<>();
 
+
+        for(String s: foods){
+//            int cont=0;
+//            for(String f: foods){
+//                log.warning("1"+s+"----2:"+f);
+//
+//                if(s.equals(f)){
+//                    cont++;
+//                }
+//            }
+//            log.warning("contador-----------:"+cont);
+//            if(cont==1 && !foodsFinal.contains(s)){
+//                log.warning("addding-----------"+s);
+                foodsFinal.add(s);
+//            }
+        }
+        return foodsFinal;
     }
 }

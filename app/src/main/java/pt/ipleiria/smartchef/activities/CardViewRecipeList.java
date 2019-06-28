@@ -29,6 +29,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -37,6 +40,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,12 +67,14 @@ public class CardViewRecipeList extends AppCompatActivity {
     ArrayList<Recipe> recipesList=new ArrayList<>();
 
     private static Logger log= Logger.getLogger("log");
+    private ImageView imageView;
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_view_recipe);
-        consumeRecipeAPI(null, this);
+//        consumeRecipeAPI(null, this);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -76,7 +82,17 @@ public class CardViewRecipeList extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new CardViewRecipeAdapter(recipesList);
         mRecyclerView.setAdapter(mAdapter);
-
+        Intent intent = getIntent();
+        String foodWords = intent.getStringExtra("foodWords");
+        log.warning("words receied///////////////////////////////////:"+foodWords);
+        textView = findViewById(R.id.processing_text);
+        textView.setText(".........Processsing...........");
+        imageView = findViewById(R.id.sad_face);
+        Picasso.get().load("https://image.flaticon.com/icons/png/512/15/15135.png").into(imageView);
+        imageView.setVisibility(View.GONE);
+//        if(!foodWords.isEmpty()) {
+            consumeRecipeAPI("asdasdasas", this);
+//        }
         // Code to Add an item with default animation
         //((CardViewRecipeAdapter) mAdapter).addItem(obj, index);
 
@@ -110,7 +126,7 @@ public class CardViewRecipeList extends AppCompatActivity {
         EditText et=findViewById(R.id.editText4);
 //        String food=et.getText().toString();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://api.edamam.com/search?q="+"chicken,tomato"+"&app_id=00fef183&app_key=54f40f77cbdd0f866bee7e8d4c7170a3&from=0&to=10&calories=591-722&health=alcohol-free";
+        String url = "https://api.edamam.com/search?q="+Foodwords+"&app_id=00fef183&app_key=54f40f77cbdd0f866bee7e8d4c7170a3&from=0&to=10&calories=591-722&health=alcohol-free";
         log.warning(url);
 //    url = url.concat(foodName);
         JsonObjectRequest request = new JsonObjectRequest(
@@ -137,7 +153,11 @@ public class CardViewRecipeList extends AppCompatActivity {
                                 log.warning(r.getUri());
                             }
                             mAdapter.notifyDataSetChanged();
-//                            validateNumberOfRecipes();
+                            if(recipesList.isEmpty()){
+                                imageView.setVisibility(View.VISIBLE);
+                                textView.setVisibility(View.GONE);
+                            }
+                            validateNumberOfRecipes();
                         }catch (JSONException e){
 //                            log.warning(e.getMessage());
                         }
@@ -162,6 +182,19 @@ public class CardViewRecipeList extends AppCompatActivity {
             }
         };
         queue.add(request);
+    }
+
+    private void validateNumberOfRecipes() {
+        if(recipesList.isEmpty()){
+            showErrorMessage();
+        }
+    }
+
+    private void showErrorMessage(){
+        CharSequence text = "We could not find recipes with the pictures that you upload please try again changing them!";
+        int duration = Toast.LENGTH_LONG;
+        Toast toast = Toast.makeText(this, text, duration);
+        toast.show();
     }
 
     private ArrayList<Recipe> getDataSet() {

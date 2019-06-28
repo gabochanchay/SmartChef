@@ -6,11 +6,20 @@
                 android:layout_height="match_parent"
                 tools:context=".activities.CardViewRecipeList">
 
+    <TextView
+        android:id="@+id/processing_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="30sp" />
+    <ImageView
+        android:id="@+id/sad_face"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:scrollbars="vertical"
-        />
+        android:scrollbars="vertical"/>
 
 </RelativeLayout>
