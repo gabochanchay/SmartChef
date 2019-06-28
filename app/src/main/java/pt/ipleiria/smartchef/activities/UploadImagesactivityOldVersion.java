@@ -44,7 +44,7 @@ import java.util.logging.Logger;
 import pt.ipleiria.smartchef.R;
 import pt.ipleiria.smartchef.api.CloudVision;
 
-public class UploadImagesactivity extends AppCompatActivity {
+public class UploadImagesactivityOldVersion extends AppCompatActivity {
 
     private static final int GALLERY_PERMISSIONS_REQUEST = 0;
     private static final int GALLERY_IMAGE_REQUEST = 1;
@@ -59,7 +59,7 @@ public class UploadImagesactivity extends AppCompatActivity {
     private static final String FOOD = "food";
     private static final String VEGETABLE = "vegetable";
     private static final String[] WORDS_TO_FILTER= {"food","vegetable","gizzards"};
-    private static final String TAG = UploadImagesactivity.class.getSimpleName();
+    private static final String TAG = UploadImagesactivityOldVersion.class.getSimpleName();
 
     private int imageNumber=0;
 
@@ -115,7 +115,7 @@ public class UploadImagesactivity extends AppCompatActivity {
         }
         log.warning(idString);
         log.warning(String.valueOf(imageNumber));
-        AlertDialog.Builder builder = new AlertDialog.Builder(UploadImagesactivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(UploadImagesactivityOldVersion.this);
         builder.setMessage(R.string.dialog_select_prompt)
                 .setPositiveButton(R.string.dialog_select_gallery, new DialogInterface.OnClickListener() {
                     @Override
@@ -290,7 +290,7 @@ public class UploadImagesactivity extends AppCompatActivity {
                     log.warning("-------------------" + s);
                 }
                 log.warning(String.valueOf(bitmapArrayList.size()));
-//            Toast.makeText(UploadImagesactivity.this, wordsNumberFound,
+//            Toast.makeText(UploadImagesactivityOldVersion.this, wordsNumberFound,
 //                    Toast.LENGTH_LONG).show();
 //            log.warning("------------------------------------"+wordsNumberFound);
                 for (String s : responseArray) {

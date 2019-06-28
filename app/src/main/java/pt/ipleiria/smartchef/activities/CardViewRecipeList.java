@@ -141,7 +141,7 @@ public class CardViewRecipeList extends AppCompatActivity {
                         try {
                             Object recipes=response.get("hits");
                             JSONArray arrayRecipes=response.getJSONArray("hits");
-//                            ArrayList<Recipe> recipesList=new ArrayList<>();
+//                            ArrayList<Recipe> bitmaps=new ArrayList<>();
                             for (int i = 0; i < arrayRecipes.length(); i++) {
                                 JSONObject recipeJson=arrayRecipes.getJSONObject(i);
                                 Gson gson = new Gson();

@@ -20,7 +20,12 @@
         android:label="SmartChef"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.RecipeDetails"></activity>
+        <activity
+            android:name=".AddActivity"
+            android:label="@string/title_activity_add"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ImagesActivity" />
+        <activity android:name=".activities.RecipeDetails" />
         <activity android:name=".activities.RecipeWebView" />
         <activity android:name=".activities.RecipeList" />
         <!--
@@ -38,16 +43,17 @@
         <activity
             android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="pt.ipleiria.smartchef.activities.MainActivity" />
+
         </activity>
-        <activity android:name=".activities.UploadImagesactivity">
+        <activity android:name=".activities.UploadImagesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".activities.UploadImagesactivityOldVersion">
+
         </activity>
         <activity android:name=".activities.SearchRecipe" />
         <activity android:name=".activities.CardViewRecipeList" />

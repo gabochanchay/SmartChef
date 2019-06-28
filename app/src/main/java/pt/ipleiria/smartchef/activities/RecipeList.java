@@ -47,7 +47,7 @@ public class RecipeList extends AppCompatActivity {
         String foodWords = intent.getStringExtra("foodWords");
         log.warning("words receied///////////////////////////////////:"+foodWords);
         consumeRecipeAPI(foodWords);
-//        ArrayList<Recipe> recipesList=new ArrayList<>();
+//        ArrayList<Recipe> bitmaps=new ArrayList<>();
 //        Recipe recipe= new Recipe();
 ////        recipe.setImage();
 //        recipe.setLabel("Pruebaaaaa");
@@ -55,8 +55,8 @@ public class RecipeList extends AppCompatActivity {
 //        ingedients.add("Chicken");
 //        ingedients.add("Tomato");
 //        recipe.setIngredientLines(ingedients);
-//        recipesList.add(recipe);
-//        CustomAdapter myCustomAdapter = new CustomAdapter(RecipeList.this ,recipesList);
+//        bitmaps.add(recipe);
+//        CustomAdapter myCustomAdapter = new CustomAdapter(RecipeList.this ,bitmaps);
 //        listView = findViewById(R.id.listView_contacts);
 //        listView.setAdapter(myCustomAdapter);
 
