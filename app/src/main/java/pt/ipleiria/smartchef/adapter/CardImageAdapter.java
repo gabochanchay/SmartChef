@@ -21,17 +21,20 @@
 package pt.ipleiria.smartchef.adapter;
 
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import pt.ipleiria.smartchef.R;
 import pt.ipleiria.smartchef.model.Recipe;
@@ -47,15 +50,22 @@ public class CardImageAdapter extends RecyclerView
     public static class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
             .OnClickListener {
-//        TextView label;
+        TextView label;
 //        TextView dateTime;
         ImageView image;
-
+        Button selectImageButton;
         public DataObjectHolder(View itemView) {
             super(itemView);
-//            label = (TextView) itemView.findViewById(R.id.textView);
+            label = (TextView) itemView.findViewById(R.id.test);
 //            dateTime = (TextView) itemView.findViewById(R.id.textView2);
             image = (ImageView) itemView.findViewById(R.id.image_to_upload);
+            selectImageButton = itemView.findViewById(R.id.upload_image_button);
+            selectImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    myClickListener.onButtonClick(v, getAdapterPosition());
+                }
+            });
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
         }
@@ -86,10 +96,13 @@ public class CardImageAdapter extends RecyclerView
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-//        holder.label.setText(mDataset.get(position).getLabel());
+
         UploadImage uploadImage=mDataset.get(position);
-//        holder.dateTime.setText(recipe.getLabel());
-        Picasso.get().load(uploadImage.getUrl()).into(holder.image);
+        holder.label.setText(uploadImage.getUrl());
+//        uploadImage.setImageView(holder.image);
+      Picasso.get().load(uploadImage.getUrl()).into(holder.image);
+//        holder.image.setImageBitmap(uploadImage.getBitmap());
+//        uploadImage.setImageView(holder.image);
     }
 
     public void addItem(UploadImage dataObj, int index) {
@@ -109,5 +122,14 @@ public class CardImageAdapter extends RecyclerView
 
     public interface MyClickListener {
         public void onItemClick(int position, View v);
+        void onButtonClick(View v, int position);
     }
+
+
+//    @Override
+//    public void onBindViewHolder(@NonNull DataObjectHolder holder, int position, @NonNull List<Object> payloads) {
+//        super.onBindViewHolder(holder, position, payloads);
+//    }
+
+
 }
