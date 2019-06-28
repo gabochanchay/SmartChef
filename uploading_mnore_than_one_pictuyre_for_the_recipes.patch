@@ -1,0 +1,975 @@
+Index: app/src/main/java/pt/ipleiria/smartchef/AddActivity.java
+===================================================================
+--- app/src/main/java/pt/ipleiria/smartchef/AddActivity.java	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
++++ app/src/main/java/pt/ipleiria/smartchef/AddActivity.java	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
+@@ -1,29 +0,0 @@
+-package pt.ipleiria.smartchef;
+-
+-import android.os.Bundle;
+-import android.support.design.widget.FloatingActionButton;
+-import android.support.design.widget.Snackbar;
+-import android.support.v7.app.AppCompatActivity;
+-import android.support.v7.widget.Toolbar;
+-import android.view.View;
+-
+-public class AddActivity extends AppCompatActivity {
+-
+-    @Override
+-    protected void onCreate(Bundle savedInstanceState) {
+-        super.onCreate(savedInstanceState);
+-        setContentView(R.layout.activity_add);
+-        Toolbar toolbar = findViewById(R.id.toolbar);
+-        setSupportActionBar(toolbar);
+-
+-        FloatingActionButton fab = findViewById(R.id.fab);
+-        fab.setOnClickListener(new View.OnClickListener() {
+-            @Override
+-            public void onClick(View view) {
+-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+-                        .setAction("Action", null).show();
+-            }
+-        });
+-    }
+-
+-}
+Index: app/src/main/java/pt/ipleiria/smartchef/ImagesActivity.java
+===================================================================
+--- app/src/main/java/pt/ipleiria/smartchef/ImagesActivity.java	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
++++ app/src/main/java/pt/ipleiria/smartchef/ImagesActivity.java	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
+@@ -1,13 +0,0 @@
+-package pt.ipleiria.smartchef;
+-
+-import android.support.v7.app.AppCompatActivity;
+-import android.os.Bundle;
+-
+-public class ImagesActivity extends AppCompatActivity {
+-
+-    @Override
+-    protected void onCreate(Bundle savedInstanceState) {
+-        super.onCreate(savedInstanceState);
+-        setContentView(R.layout.activity_images);
+-    }
+-}
+Index: app/src/main/res/layout/activity_add.xml
+===================================================================
+--- app/src/main/res/layout/activity_add.xml	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
++++ app/src/main/res/layout/activity_add.xml	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
+@@ -1,33 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    xmlns:tools="http://schemas.android.com/tools"
+-    android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    tools:context=".AddActivity">
+-
+-    <android.support.design.widget.AppBarLayout
+-        android:layout_width="match_parent"
+-        android:layout_height="wrap_content"
+-        android:theme="@style/AppTheme.AppBarOverlay">
+-
+-        <android.support.v7.widget.Toolbar
+-            android:id="@+id/toolbar"
+-            android:layout_width="match_parent"
+-            android:layout_height="?attr/actionBarSize"
+-            android:background="?attr/colorPrimary"
+-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+-
+-    </android.support.design.widget.AppBarLayout>
+-
+-    <include layout="@layout/content_add" />
+-
+-    <android.support.design.widget.FloatingActionButton
+-        android:id="@+id/fab"
+-        android:layout_width="wrap_content"
+-        android:layout_height="wrap_content"
+-        android:layout_gravity="bottom|end"
+-        android:layout_margin="@dimen/fab_margin"
+-        app:srcCompat="@android:drawable/ic_dialog_email" />
+-
+-</android.support.design.widget.CoordinatorLayout>
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_images.xml
+===================================================================
+--- app/src/main/res/layout/activity_images.xml	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
++++ app/src/main/res/layout/activity_images.xml	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
+@@ -1,27 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    xmlns:tools="http://schemas.android.com/tools"
+-    android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    tools:context=".ImagesActivity">
+-
+-    <android.support.v7.widget.RecyclerView
+-        android:id="@+id/my_recycler_view"
+-        android:layout_width="fill_parent"
+-        android:layout_height="fill_parent"
+-        android:scrollbars="vertical"/>
+-
+-    <android.support.design.widget.FloatingActionButton
+-        android:id="@+id/fab"
+-        android:layout_width="wrap_content"
+-        android:layout_height="wrap_content"
+-        android:layout_gravity="bottom|end"
+-        android:layout_margin="@dimen/fab_margin"
+-        android:layout_marginEnd="20dp"
+-        android:layout_marginBottom="20dp"
+-        app:layout_constraintBottom_toBottomOf="parent"
+-        app:layout_constraintEnd_toEndOf="parent"
+-        app:srcCompat="@android:drawable/ic_dialog_email" />
+-
+-</android.support.constraint.ConstraintLayout>
+\ No newline at end of file
+Index: app/src/main/res/layout/content_add.xml
+===================================================================
+--- app/src/main/res/layout/content_add.xml	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
++++ app/src/main/res/layout/content_add.xml	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
+@@ -1,11 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    xmlns:tools="http://schemas.android.com/tools"
+-    android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+-    tools:context=".AddActivity"
+-    tools:showIn="@layout/activity_add">
+-
+-</android.support.constraint.ConstraintLayout>
+\ No newline at end of file
+Index: app/src/main/java/pt/ipleiria/smartchef/adapter/CardImageAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/pt/ipleiria/smartchef/adapter/CardImageAdapter.java	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
++++ app/src/main/java/pt/ipleiria/smartchef/adapter/CardImageAdapter.java	(date 1561755812000)
+@@ -22,6 +22,7 @@
+ 
+ import android.graphics.Bitmap;
+ import android.support.annotation.NonNull;
++import android.support.design.widget.FloatingActionButton;
+ import android.support.v7.widget.RecyclerView;
+ import android.util.Log;
+ import android.view.LayoutInflater;
+@@ -50,22 +51,27 @@
+     public static class DataObjectHolder extends RecyclerView.ViewHolder
+             implements View
+             .OnClickListener {
+-        TextView label;
+ //        TextView dateTime;
+         ImageView image;
+-        Button selectImageButton;
++        FloatingActionButton selectImageButton;
++        FloatingActionButton deleteButton;
+         public DataObjectHolder(View itemView) {
+             super(itemView);
+-            label = (TextView) itemView.findViewById(R.id.test);
+-//            dateTime = (TextView) itemView.findViewById(R.id.textView2);
+             image = (ImageView) itemView.findViewById(R.id.image_to_upload);
+             selectImageButton = itemView.findViewById(R.id.upload_image_button);
++            deleteButton = itemView.findViewById(R.id.delete_item_button);
+             selectImageButton.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     myClickListener.onButtonClick(v, getAdapterPosition());
+                 }
+             });
++            deleteButton.setOnClickListener(new View.OnClickListener() {
++                @Override
++                public void onClick(View v) {
++                    myClickListener.onDeleteButtonClick(v, getAdapterPosition());
++                }
++            });
+             Log.i(LOG_TAG, "Adding Listener");
+             itemView.setOnClickListener(this);
+         }
+@@ -98,7 +104,6 @@
+     public void onBindViewHolder(DataObjectHolder holder, int position) {
+ 
+         UploadImage uploadImage=mDataset.get(position);
+-        holder.label.setText(uploadImage.getUrl());
+ //        uploadImage.setImageView(holder.image);
+       Picasso.get().load(uploadImage.getUrl()).into(holder.image);
+ //        holder.image.setImageBitmap(uploadImage.getBitmap());
+@@ -122,7 +127,8 @@
+ 
+     public interface MyClickListener {
+         public void onItemClick(int position, View v);
+-        void onButtonClick(View v, int position);
++        public void onButtonClick(View v, int position);
++        public void onDeleteButtonClick(View v, int position);
+     }
+ 
+ 
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/strings.xml	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
++++ app/src/main/res/values/strings.xml	(date 1561749966000)
+@@ -19,4 +19,6 @@
+     <string name="title_activity_images">ImagesActivity</string>
+     <string name="title_activity_add">AddActivity</string>
+     <string name="charge_image">Charge Image</string>
++    <string name="get_recipes">Get Recipes</string>
++    <string name="delete_images">Delete Image</string>
+ </resources>
+\ No newline at end of file
+Index: app/src/main/java/pt/ipleiria/smartchef/api/Taxonomy.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/pt/ipleiria/smartchef/api/Taxonomy.java	(date 1561763879000)
++++ app/src/main/java/pt/ipleiria/smartchef/api/Taxonomy.java	(date 1561763879000)
+@@ -0,0 +1,78 @@
++package pt.ipleiria.smartchef.api;
++
++import android.content.Context;
++
++import com.android.volley.Request;
++import com.android.volley.RequestQueue;
++import com.android.volley.Response;
++import com.android.volley.VolleyError;
++import com.android.volley.toolbox.JsonObjectRequest;
++import com.android.volley.toolbox.Volley;
++
++import org.json.JSONObject;
++
++import java.util.ArrayList;
++import java.util.HashMap;
++import java.util.Iterator;
++import java.util.List;
++import java.util.Map;
++import java.util.logging.Logger;
++
++public class Taxonomy {
++
++    private static Logger log = Logger.getLogger("log");
++
++    private static boolean food=false;
++
++//    public booleans
++
++    public static boolean verifyFood(String word, Context context) {
++
++        String url = "https://api.uclassify.com/v1/uclassify/iab-taxonomy/classify?readkey=BaCk5w4RQ4y2&text=" + word;
++        RequestQueue queue = Volley.newRequestQueue(context);
++        log.warning("url to Taxonomy:" + url);
++        final JsonObjectRequest request = new JsonObjectRequest(
++                Request.Method.GET,
++                url,
++                null,
++                new Response.Listener<JSONObject>() {
++                    @Override
++                    public void onResponse(JSONObject response) {
++                        try {
++                            Iterator<String> array = response.keys();
++                            String taxonmy = "food and drink_";
++                            while (array.hasNext()) {
++                                String key = array.next();
++                                Object value = response.get(key);
++                                Double d = (Double) value;
++                                if (d.compareTo(0.4) > 0 && key.startsWith(taxonmy)) {
++//                                    log.warning("*****"+word+"******************key:" + key+ "------------"+ String.valueOf(d));
++                                    food = true;
++                                }
++
++                            }
++                        } catch (Exception e) {
++                            log.warning(e.getMessage());
++                        }
++                    }
++                },
++                new Response.ErrorListener() {
++                    @Override
++                    public void onErrorResponse(VolleyError error) {
++
++
++                    }
++                }
++        ) {
++            @Override
++            public Map<String, String> getHeaders() {
++                HashMap<String, String> headers = new HashMap<>();
++                headers.put("Content-Type", "application/json");
++                return headers;
++            }
++        };
++        queue.add(request);
++        return food;
++    }
++
++}
+Index: app/src/main/res/layout/activity_upload_imagesactivity.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_upload_imagesactivity.xml	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
++++ app/src/main/res/layout/activity_upload_imagesactivity.xml	(date 1561758975000)
+@@ -133,6 +133,7 @@
+         android:onClick="callCloudVisionAPI"
+         android:text="Get Recipes"
+         android:layout_centerInParent="true"
++
+         app:layout_constraintBottom_toTopOf="@+id/resultText"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+Index: app/src/main/res/layout/activity_card_view_recipe.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_card_view_recipe.xml	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
++++ app/src/main/res/layout/activity_card_view_recipe.xml	(date 1561761888000)
+@@ -10,6 +10,7 @@
+         android:id="@+id/processing_text"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
++        android:layout_centerHorizontal="true"
+         android:textSize="30sp" />
+     <ImageView
+         android:id="@+id/sad_face"
+Index: app/src/main/java/pt/ipleiria/smartchef/activities/CardViewRecipeList.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/pt/ipleiria/smartchef/activities/CardViewRecipeList.java	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
++++ app/src/main/java/pt/ipleiria/smartchef/activities/CardViewRecipeList.java	(date 1561760147000)
+@@ -85,13 +85,19 @@
+         Intent intent = getIntent();
+         String foodWords = intent.getStringExtra("foodWords");
+         log.warning("words receied///////////////////////////////////:"+foodWords);
++        if(foodWords==null || foodWords.isEmpty()){
++            showErrorMessage();
++            return;
++        }
+         textView = findViewById(R.id.processing_text);
+         textView.setText(".........Processsing...........");
+         imageView = findViewById(R.id.sad_face);
+         Picasso.get().load("https://image.flaticon.com/icons/png/512/15/15135.png").into(imageView);
+         imageView.setVisibility(View.GONE);
++
++
+ //        if(!foodWords.isEmpty()) {
+-            consumeRecipeAPI("asdasdasas", this);
++            consumeRecipeAPI(foodWords, this);
+ //        }
+         // Code to Add an item with default animation
+         //((CardViewRecipeAdapter) mAdapter).addItem(obj, index);
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
++++ app/src/main/AndroidManifest.xml	(date 1561765310000)
+@@ -20,11 +20,6 @@
+         android:label="SmartChef"
+         android:supportsRtl="true"
+         android:theme="@style/AppTheme">
+-        <activity
+-            android:name=".AddActivity"
+-            android:label="@string/title_activity_add"
+-            android:theme="@style/AppTheme.NoActionBar"></activity>
+-        <activity android:name=".ImagesActivity" />
+         <activity android:name=".activities.RecipeDetails" />
+         <activity android:name=".activities.RecipeWebView" />
+         <activity android:name=".activities.RecipeList" />
+Index: app/src/main/res/layout/upload_images_item.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/upload_images_item.xml	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
++++ app/src/main/res/layout/upload_images_item.xml	(date 1561759255000)
+@@ -2,7 +2,8 @@
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+     android:orientation="vertical" android:layout_width="match_parent"
+-    android:layout_height="500dp">
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:layout_height="340dp">
+ 
+     <android.support.v7.widget.CardView
+         android:id="@+id/card_view"
+@@ -21,21 +22,41 @@
+             <ImageView
+                 android:id="@+id/image_to_upload"
+                 android:layout_width="fill_parent"
+-                android:layout_height="300dp"
++                android:layout_height="320dp"
+                 android:layout_gravity="fill"
+                 android:scaleType="centerCrop" />
+-            <Button
++
++            <android.support.design.widget.FloatingActionButton
+                 android:id="@+id/upload_image_button"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+-                android:text="@string/charge_image"/>
+-            <TextView
+-                android:id="@+id/test"
++                android:layout_alignParentLeft="true"
++                android:layout_alignParentTop="true"
++                android:layout_marginLeft="16dp"
++                android:layout_marginTop="16dp"
++                android:src="@android:drawable/ic_menu_gallery"
++                app:elevation="0dp"
++                card_view:backgroundTint="#00BCD4" />
++
++            <android.support.design.widget.FloatingActionButton
++                android:id="@+id/delete_item_button"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+-                android:layout_margin="10dp"
+-                android:textStyle="bold"
+-                android:layout_alignParentBottom="true"/>
++                android:layout_alignParentLeft="true"
++                android:layout_alignParentBottom="true"
++                android:layout_marginLeft="16dp"
++                android:layout_marginBottom="16dp"
++                android:src="@android:drawable/ic_menu_delete"
++                app:elevation="0dp"
++                card_view:backgroundTint="#00BCD4" />
++
++            <!--<Button
++                android:id="@+id/delete_item_button"
++                android:layout_width="45dp"
++                android:layout_height="45dp"
++                android:layout_alignParentLeft="true"
++                android:layout_alignParentBottom="true"
++                android:background="@android:drawable/ic_delete" />-->
+ 
+ 
+         </RelativeLayout>
+Index: app/src/main/java/pt/ipleiria/smartchef/api/RecipeApi.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/pt/ipleiria/smartchef/api/RecipeApi.java	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
++++ app/src/main/java/pt/ipleiria/smartchef/api/RecipeApi.java	(date 1561762267000)
+@@ -31,13 +31,6 @@
+                     public void onResponse(JSONArray response) {
+                         Log.d("Response", response.toString());
+                         log.warning(response.toString());
+-                        Gson gson = new Gson();
+-//                        Recipe[] contacts = gson.fromJson(
+-//                                response.toString(), Recipe[].class);
+-//                        for (Contact contact : contacts) {
+-//                            Singleton.getInstance().getAgenda().addContact(contact);
+-//                        }
+-//                        adapter.notifyDataSetChanged();
+                     }
+                 },
+                 new Response.ErrorListener() {
+Index: app/src/main/res/layout/upload_images_view.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/upload_images_view.xml	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
++++ app/src/main/res/layout/upload_images_view.xml	(date 1561761888000)
+@@ -6,10 +6,66 @@
+     android:layout_height="match_parent"
+     tools:context=".activities.UploadImagesActivity">
+ 
++    <!--<android.support.v7.widget.Toolbar
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:background="#3F51B5">
++
++    </android.support.v7.widget.Toolbar>-->
++
++    <Button
++        android:id="@+id/getRecipes"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_centerHorizontal="true"
++        android:background="@drawable/shape"
++        android:backgroundTint="#03A9F4"
++        android:text="@string/get_recipes"
++        android:onClick="callImageReconition"
++        android:layout_marginTop="5dp"
++        android:textColor="@color/colorPrimary" />
+     <android.support.v7.widget.RecyclerView
+         android:id="@+id/images_recycler_view"
+         android:layout_width="fill_parent"
+         android:layout_height="fill_parent"
++        android:paddingTop="55dp"
+         android:scrollbars="vertical"/>
+ 
++
++    <android.support.design.widget.FloatingActionButton
++        android:id="@+id/addButton"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_alignParentRight="true"
++        android:layout_alignParentBottom="true"
++        android:layout_marginRight="16dp"
++        android:layout_marginBottom="16dp"
++        android:onClick="addImage"
++        android:src="@android:drawable/ic_input_add"
++        app:backgroundTint="#3F51B5"
++        app:elevation="0dp" />
++
++    <RelativeLayout
++        android:id="@+id/loadingPanel"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        android:gravity="center" >
++
++        <ProgressBar
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:indeterminate="true" />
++
++    </RelativeLayout>
++
++    <!--<android.support.design.widget.FloatingActionButton
++        android:id="@+id/getRecipesButton"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_alignParentEnd="true"
++        android:layout_alignParentRight="true"
++        android:onClick="callImageReconition"
++        app:backgroundTint="#3F51B5"
++        app:srcCompat="@drawable/quantum_ic_search_grey600_24" />-->
++
+ </RelativeLayout>
+Index: app/src/main/res/values/colors.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/colors.xml	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
++++ app/src/main/res/values/colors.xml	(date 1561758333000)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <resources>
+-    <color name="colorPrimary">#3F51B5</color>
++    <color name="colorPrimary">#FFFFFF</color>
+     <color name="colorPrimaryDark">#303F9F</color>
+     <color name="colorAccent">#FF4081</color>
+ </resources>
+Index: app/src/main/java/pt/ipleiria/smartchef/activities/UploadImagesActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/pt/ipleiria/smartchef/activities/UploadImagesActivity.java	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
++++ app/src/main/java/pt/ipleiria/smartchef/activities/UploadImagesActivity.java	(date 1561765124000)
+@@ -14,6 +14,7 @@
+ import android.support.v7.app.AppCompatActivity;
+ import android.support.v7.widget.LinearLayoutManager;
+ import android.support.v7.widget.RecyclerView;
++import android.support.v7.widget.Toolbar;
+ import android.util.Log;
+ import android.view.View;
+ import android.widget.Button;
+@@ -22,6 +23,7 @@
+ import android.widget.TextView;
+ import android.widget.Toast;
+ 
++
+ import com.android.volley.Request;
+ import com.android.volley.RequestQueue;
+ import com.android.volley.Response;
+@@ -37,14 +39,21 @@
+ 
+ import java.io.File;
+ import java.io.IOException;
++import java.net.URLEncoder;
+ import java.util.ArrayList;
+ import java.util.HashMap;
++import java.util.HashSet;
++import java.util.Iterator;
++import java.util.List;
+ import java.util.Map;
++import java.util.Set;
+ import java.util.logging.Logger;
+ 
+ import pt.ipleiria.smartchef.R;
+ import pt.ipleiria.smartchef.adapter.CardImageAdapter;
+ import pt.ipleiria.smartchef.adapter.CardViewRecipeAdapter;
++import pt.ipleiria.smartchef.api.CloudVision;
++import pt.ipleiria.smartchef.api.Taxonomy;
+ import pt.ipleiria.smartchef.model.Recipe;
+ import pt.ipleiria.smartchef.model.UploadImage;
+ 
+@@ -75,13 +84,18 @@
+     private static final String TAG = UploadImagesactivityOldVersion.class.getSimpleName();
+ 
+     private UploadImage imageSelected=null;
+-    private ArrayList<UploadImage> images=new ArrayList<>();
++    private ArrayList<UploadImage> images;
++    private ArrayList<Bitmap> bitmapArrayList;
++    private int wordsNumberFound=0;
++    private int wordsNumberProcessed=0;
++    private String foodWords="";
++    private List<String> foodDetected;
++    private List<String> objectsDetected=new ArrayList<>();
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.upload_images_view);
+-//        consumeRecipeAPI(null, this);
+ 
+         mRecyclerView = (RecyclerView) findViewById(R.id.images_recycler_view);
+         mRecyclerView.setHasFixedSize(true);
+@@ -90,16 +104,11 @@
+         images = getDataSet();
+         mAdapter = new CardImageAdapter(images);
+         mRecyclerView.setAdapter(mAdapter);
++        findViewById(R.id.loadingPanel).setVisibility(View.INVISIBLE);
+ 
+-//        imageView.setVisibility(View.GONE);
+-//        if(!foodWords.isEmpty()) {
++//        Toolbar toolbar = findViewById(R.id.toolbar);
++//        setSupportActionBar(toolbar);
+ 
+-//        }
+-        // Code to Add an item with default animation
+-        //((CardViewRecipeAdapter) mAdapter).addItem(obj, index);
+-
+-        // Code to remove an item with default animation
+-        //((CardViewRecipeAdapter) mAdapter).deleteItem(index);
+     }
+ 
+ 
+@@ -111,8 +120,6 @@
+             @Override
+             public void onItemClick(int position, View v) {
+                 Log.i(LOG_TAG, " Clicked on Item " + position);
+-//                List<Recipe> recipes=getDataSet();
+-//                goToDetails(bitmaps.get(position));
+             }
+ 
+             @Override
+@@ -121,6 +128,11 @@
+                 log.warning("position:---------"+position);
+                 selectSource();
+             }
++
++            @Override
++            public void onDeleteButtonClick(View v, int position) {
++                removeImage(position);
++            }
+         });
+ 
+     }
+@@ -143,6 +155,12 @@
+         builder.create().show();
+     }
+ 
++    public void removeImage(int position){
++        UploadImage uploadImage=images.get(position);
++        images.remove(uploadImage);
++        mAdapter.notifyDataSetChanged();
++    }
++
+     public void startGalleryChooser() {
+         if (PermissionUtils.requestPermission(this, GALLERY_PERMISSIONS_REQUEST, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+             Intent intent = new Intent();
+@@ -172,16 +190,11 @@
+         return new File(dir, FILE_NAME);
+     }
+ 
+-    private UploadImage getCorespondingImage(){
+-
+-        return null;
+-    }
+-
+-
+     private void modifyImages(UploadImage image){
+         for(UploadImage i: images) {
+             if (image.getId()==i.getId()) {
+                 i.setUrl(image.getUrl());
++                i.setBitmap(image.getBitmap());
+             }
+         }
+     }
+@@ -189,37 +202,29 @@
+     @Override
+     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+         super.onActivityResult(requestCode, resultCode, data);
+-//        ImageView imageView = findViewById(R.id.image_to_upload);
+-
+         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+             try{
+                 Bitmap bitmap = scaleBitmapDown(
+                         MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData()),
+                         1200);
+-//                imageView.setImageBitmap(bitmap);
+-//                mAdapter.
+-
+                 imageSelected.setUrl(data.getData().toString());
++                imageSelected.setBitmap(bitmap);
+                 modifyImages(imageSelected);
+-//                imageSelected.setBitmap(bitmap);
+-//                imageSelected.setImageView();
+-//                imageSelected.getImageView().setImageBitmap(bitmap);
+                 mAdapter.notifyDataSetChanged();
+             } catch (IOException e) {
+                 Log.d(TAG, "Image picking failed because " + e.getMessage());
+                 Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
+             }
+-//            uploadImage(data.getData());
+         } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
+             Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
+-//            uploadImage(photoUri);
+             try{
+                 Bitmap bitmap = scaleBitmapDown(
+                         MediaStore.Images.Media.getBitmap(getContentResolver(), photoUri),
+                         1200);
++                imageSelected.setUrl(photoUri.toString());
+                 imageSelected.setBitmap(bitmap);
++                modifyImages(imageSelected);
+                 mAdapter.notifyDataSetChanged();
+-
+             } catch (IOException e) {
+                 Log.d(TAG, "Image picking failed because " + e.getMessage());
+                 Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
+@@ -247,38 +252,175 @@
+         return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
+     }
+ 
+-    private void goToDetails(Recipe recipe){
+-        Intent intent = new Intent(this, RecipeDetails.class);
+-        intent.putExtra("recipe", recipe);
+-        startActivity(intent);
+-    }
+-
+-    private void validateNumberOfRecipes() {
+-        if(bitmaps.isEmpty()){
+-            showErrorMessage();
+-        }
+-    }
+-
+-    private void showErrorMessage(){
+-        CharSequence text = "We could not find recipes with the pictures that you upload please try again changing them!";
+-        int duration = Toast.LENGTH_LONG;
+-        Toast toast = Toast.makeText(this, text, duration);
+-        toast.show();
+-    }
+-
+     private ArrayList<UploadImage> getDataSet() {
+         ArrayList results = new ArrayList<UploadImage>();
+-        for (int index = 0; index < 4; index++) {
++        for (int index = 0; index < 1; index++) {
+             UploadImage obj = new UploadImage();
+-            int w = 100, h = 100;
+-
+-            Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+-            Bitmap bmp = Bitmap.createBitmap(w, h, conf);
+-            obj.setBitmap(bmp);
+             obj.setId(index);
+-//            obj.setUrl("https://www.edamam.com/web-img/6fb/6fb01301f56533a5a880f9ee072b7cb2");
+             results.add(index, obj);
+         }
+         return results;
+     }
++
++    public void addImage(View view){
++        CharSequence text = "Item added";
++        int duration = Toast.LENGTH_SHORT;
++        Toast toast = Toast.makeText(this, text, duration);
++        toast.show();
++        UploadImage uploadImage=new UploadImage();
++        uploadImage.setId(mAdapter.getItemCount()+1);
++        images.add(uploadImage);
++        mAdapter.notifyDataSetChanged();
++    }
++
++    private boolean validateImages(){
++        boolean empty=false;
++        for(UploadImage uploadImage: images){
++            if(uploadImage.getBitmap()==null){
++                empty=true;
++            }
++        }
++        return empty;
++    }
++
++    public void callImageReconition(View view){
++        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
++        boolean empty=validateImages();
++        if(empty){
++            CharSequence text = "Please upload images to every item, or delete the image you are not using";
++            int duration = Toast.LENGTH_LONG;
++            Toast toast = Toast.makeText(this, text, duration);
++            toast.show();
++        }else {
++            fillBitMapArrayList();
++            foodWords = "";
++            try {
++                objectsDetected = new ArrayList<>();
++                foodDetected = new ArrayList<>();
++                List<String> responseArray = CloudVision.callCloudVision(bitmapArrayList, CLOUD_VISION_API_KEY, getPackageName(), ANDROID_PACKAGE_HEADER, getPackageManager(), ANDROID_CERT_HEADER);
++                wordsNumberFound = responseArray.size();
++                for (String s : responseArray) {
++                    log.warning("-------------------" + s);
++                }
++                for (String s : responseArray) {
++                    log.warning("word to Taxonomy:" + s);
++
++                    consumeTaxonomyApi(URLEncoder.encode(s, "UTF-8"), this);
++//                    boolean food=Taxonomy.verifyFood(URLEncoder.encode(s, "UTF-8"), this);
++//                    if(food){
++//                        foodDetected.add(s);
++//                    }
++                }
++//                Set<String> foods=filterTypesOfFood(foodDetected);
++//                for(String s: foods){
++//                    log.warning("word to api recipes:--------:" + s);
++//                    foodWords=foodWords+","+s;
++//                }
++//                wordsNumberProcessed=0;
++//                log.warning("foooooooooooood:"+foodWords);
++//                Intent intent = new Intent(this, CardViewRecipeList.class);
++//                intent.putExtra("foodWords", foodWords);
++//                startActivity(intent);
++//                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
++            } catch (IOException e) {
++                log.warning(e.getMessage());
++            }
++        }
++    }
++
++    public void fillBitMapArrayList(){
++        bitmapArrayList=new ArrayList<>();
++        for(UploadImage u: images){
++            bitmapArrayList.add(u.getBitmap());
++        }
++    }
++
++    public void consumeTaxonomyApi(final String word, final Context context) {
++        String url = "https://api.uclassify.com/v1/uclassify/iab-taxonomy/classify?readkey=BaCk5w4RQ4y2&text="+word;
++        RequestQueue queue = Volley.newRequestQueue(this);
++        log.warning("url to Taxonomy:"+ url);
++        JsonObjectRequest request = new JsonObjectRequest(
++                Request.Method.GET,
++                url,
++                null,
++                new Response.Listener<JSONObject>() {
++                    @Override
++                    public void onResponse(JSONObject response) {
++                        try {
++                            Iterator<String> array= response.keys();
++                            String taxonmy="food and drink_";
++                            while (array.hasNext()){
++                                String key = array.next();
++                                Object value = response.get(key);
++                                Double d=(Double) value;
++                                if(d.compareTo(0.4)>0 && key.startsWith(taxonmy)) {
++//                                    log.warning("*****"+word+"******************key:" + key+ "------------"+ String.valueOf(d));
++                                    foodDetected.add(word);
++                                }
++                            }
++                        } catch (Exception e) {
++                            log.warning(e.getMessage());
++                        }
++                        wordsNumberProcessed++;
++                        validateEveryWordIsProcesed();
++                    }
++                },
++                new Response.ErrorListener() {
++                    @Override
++                    public void onErrorResponse(VolleyError error) {
++
++
++                    }
++                }
++        ) {
++            @Override
++            public Map<String, String> getHeaders() {
++                HashMap<String, String> headers = new HashMap<>();
++                headers.put("Content-Type", "application/json");
++                return headers;
++            }
++        };
++        queue.add(request);
++    }
++
++    private void validateEveryWordIsProcesed() {
++        log.warning("nuuuuuuuuuuuuuumeeeeerooooo:"+ wordsNumberFound);
++        log.warning("proceseddddddddddddd:"+ wordsNumberProcessed);
++        if(wordsNumberProcessed==wordsNumberFound){
++            log.warning("YEEEEEEEEEEEEEEEEEEEEEEEEEEES");
++            for(String s: foodDetected){
++                log.warning("word with out filtered::--------:" + s);
++            }
++            Set<String> foods=filterTypesOfFood(foodDetected);
++
++            for(String s: foods){
++                log.warning("word to api recipes:--------:" + s);
++                foodWords=foodWords+","+s;
++            }
++            wordsNumberProcessed=0;
++            log.warning("foooooooooooood:"+foodWords);
++//            Intent intent = new Intent(this, RecipeList.class);
++            Intent intent = new Intent(this, CardViewRecipeList.class);
++            intent.putExtra("foodWords", foodWords);
++            startActivity(intent);
++            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
++        }
++    }
++
++    private Set<String> filterTypesOfFood(List<String> foods){
++        List<String> foodsAux=new ArrayList<>(foods);
++        for(String s: foodsAux){
++            for(String f: WORDS_TO_FILTER){
++                if(s.toUpperCase().trim().equals(f.toUpperCase())){
++                    foods.remove(s);
++                }
++            }
++        }
++        ArrayList<String> repeatedWords=new ArrayList<>();
++        Set<String> foodsFinal=new HashSet<>();
++        for(String s: foods){
++            foodsFinal.add(s);
++        }
++        return foodsFinal;
++    }
+ }
+Index: app/src/main/res/drawable/shape.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/drawable/shape.xml	(date 1561756788000)
++++ app/src/main/res/drawable/shape.xml	(date 1561756788000)
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="utf-8"?>
++<shape xmlns:android="http://schemas.android.com/apk/res/android" >
++    <corners
++        android:bottomLeftRadius="7dp"
++        android:bottomRightRadius="7dp"
++        android:topLeftRadius="7dp"
++        android:topRightRadius="7dp" />
++</shape>
+\ No newline at end of file
+Index: app/src/main/res/values/styles.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/styles.xml	(revision e743f51ec6e71e26fd49c128008885dabc013a99)
++++ app/src/main/res/values/styles.xml	(date 1561752206000)
+@@ -1,7 +1,7 @@
+ <resources>
+ 
+     <!-- Base application theme. -->
+-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
++    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+         <!-- Customize your theme here. -->
+         <item name="colorPrimary">@color/colorPrimary</item>
+         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
