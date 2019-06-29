@@ -381,16 +381,23 @@ public class UploadImagesActivity extends AppCompatActivity {
                 log.warning("word with out filtered::--------:" + s);
             }
             Set<String> foods=filterTypesOfFood(foodDetected);
-
+            String[] foodArray=new String[foods.size()];
+            int cont=0;
             for(String s: foods){
                 log.warning("word to api recipes:--------:" + s);
                 foodWords=foodWords+","+s;
+                s=s.replaceAll("\\+", " ");
+                foodArray[cont] = s;
+                cont++;
             }
             wordsNumberProcessed=0;
             log.warning("foooooooooooood:"+foodWords);
+
+
 //            Intent intent = new Intent(this, RecipeList.class);
             Intent intent = new Intent(this, CardViewRecipeList.class);
             intent.putExtra("foodWords", foodWords);
+            intent.putExtra("foodArray", foodArray);
             startActivity(intent);
             findViewById(R.id.loadingPanel).setVisibility(View.GONE);
         }

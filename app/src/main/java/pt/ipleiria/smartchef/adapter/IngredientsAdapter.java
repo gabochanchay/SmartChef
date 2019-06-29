@@ -1,7 +1,9 @@
 package pt.ipleiria.smartchef.adapter;
 
 import android.content.ClipData.Item;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +45,17 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int listPosition) {
         TextView item = holder.item;
-        item.setText(itemList.get(listPosition));
+        String ingredient=itemList.get(listPosition);
+        String[] ingredientArray=ingredient.split("]");
+        int cont=0;
+        for(String s: ingredientArray){
+            cont++;
+
+        }
+        if(cont==1){
+            item.setBackgroundColor(Color.parseColor("#CCFFFF"));
+        }
+        item.setText(ingredientArray[0]);
     }
 
     // Static inner class to initialize the views of rows

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +21,8 @@ public class RecipeDetails extends AppCompatActivity {
     TextView recipeName;
     RecyclerView recyclerView;
     ImageView imageView;
+    String recipeLink;
+    Recipe recipe;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,9 +31,10 @@ public class RecipeDetails extends AppCompatActivity {
         imageView=findViewById(R.id.imageRecipeDetail);
 
         Intent intent = getIntent();
-        Recipe recipe=(Recipe)intent.getSerializableExtra("recipe");
+        recipe=(Recipe)intent.getSerializableExtra("recipe");
         Picasso.get().load(recipe.getImage()).into(imageView);
         recipeName.setText(recipe.getLabel());
+        recipeLink= recipe.getUrl();
 //        ArrayList<Item> itemList = new ArrayList<Item>();
 
         IngredientsAdapter itemArrayAdapter = new IngredientsAdapter(R.layout.list_item_ingredient, recipe.getIngredientLines());
@@ -42,5 +46,11 @@ public class RecipeDetails extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(itemArrayAdapter);
+    }
+
+    public void loadWebPageRecipe(View view){
+        Intent intent = new Intent(this, RecipeWebView.class);
+        intent.putExtra("recipe", recipe);
+        startActivity(intent);
     }
 }

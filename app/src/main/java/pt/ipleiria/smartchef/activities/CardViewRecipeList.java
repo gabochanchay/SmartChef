@@ -38,6 +38,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -46,6 +47,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +71,7 @@ public class CardViewRecipeList extends AppCompatActivity {
     private static Logger log= Logger.getLogger("log");
     private ImageView imageView;
     private TextView textView;
+    String[] foodArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +87,7 @@ public class CardViewRecipeList extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         Intent intent = getIntent();
         String foodWords = intent.getStringExtra("foodWords");
+        foodArray=(String[]) intent.getSerializableExtra("foodArray");
         log.warning("words receied///////////////////////////////////:"+foodWords);
         if(foodWords==null || foodWords.isEmpty()){
             showErrorMessage();
@@ -152,8 +156,20 @@ public class CardViewRecipeList extends AppCompatActivity {
                                 JSONObject recipeJson=arrayRecipes.getJSONObject(i);
                                 Gson gson = new Gson();
                                 Object r=recipeJson.get("recipe");
-                                Recipe contact = gson.fromJson(r.toString(), Recipe.class);
-                                recipesList.add(contact);
+                                Recipe recipe = gson.fromJson(r.toString(), Recipe.class);
+                                ArrayList<String> ingredientsValidated= new ArrayList<>();
+                                for(String s: recipe.getIngredientLines()){
+                                    if(s!=null) {
+                                        s=validateIngredient(s);
+                                    }
+//                                    log.warning("IIIIIIIIIIIIIIIIIIIIII"+s);
+                                    ingredientsValidated.add(s);
+                                }
+                                for(String s: ingredientsValidated){
+//                                    log.warning("IIIIIIIIIIIIIIIIIIIIFFFFFFFFFF"+s);
+                                }
+                                recipe.setIngredientLines(ingredientsValidated);
+                                recipesList.add(recipe);
                             }
                             for (Recipe r : recipesList) {
                                 log.warning(r.getUri());
@@ -194,6 +210,20 @@ public class CardViewRecipeList extends AppCompatActivity {
         if(recipesList.isEmpty()){
             showErrorMessage();
         }
+    }
+
+    private String validateIngredient(String ingredient){
+
+        for(String s : foodArray){
+            if(s!=null) {
+//                System.out.println("foodArray:"+s+"===========ingredient"+ingredient);
+                if (ingredient.toUpperCase().contains(s.toUpperCase()) || ingredient.toUpperCase().contains((s.toUpperCase()).concat("es")) || ingredient.toUpperCase().contains((s.toUpperCase()).concat("s"))) {
+                    ingredient = ingredient + " ] yes";
+//                    log.warning(s+"----"+ingredient);
+                }
+            }
+        }
+        return ingredient;
     }
 
     private void showErrorMessage(){
