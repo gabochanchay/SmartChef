@@ -14,13 +14,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -30,11 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -51,11 +42,9 @@ import java.util.logging.Logger;
 
 import pt.ipleiria.smartchef.R;
 import pt.ipleiria.smartchef.adapter.CardImageAdapter;
-import pt.ipleiria.smartchef.adapter.CardViewRecipeAdapter;
 import pt.ipleiria.smartchef.api.CloudVision;
-import pt.ipleiria.smartchef.api.Taxonomy;
-import pt.ipleiria.smartchef.model.Recipe;
 import pt.ipleiria.smartchef.model.UploadImage;
+import pt.ipleiria.smartchef.util.PermissionUtils;
 
 public class UploadImagesActivity extends AppCompatActivity {
 

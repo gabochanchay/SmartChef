@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 
 import pt.ipleiria.smartchef.R;
 import pt.ipleiria.smartchef.api.CloudVision;
+import pt.ipleiria.smartchef.util.PermissionUtils;
 
 public class UploadImagesactivityOldVersion extends AppCompatActivity {
 

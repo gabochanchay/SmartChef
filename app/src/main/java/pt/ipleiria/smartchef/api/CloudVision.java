@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
-import pt.ipleiria.smartchef.activities.PackageManagerUtils;
+import pt.ipleiria.smartchef.util.PackageManagerUtils;
 
 public class CloudVision {
 
