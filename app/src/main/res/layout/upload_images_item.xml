@@ -36,7 +36,7 @@
                 android:layout_marginTop="16dp"
                 android:src="@android:drawable/ic_menu_gallery"
                 app:elevation="0dp"
-                card_view:backgroundTint="#00BCD4" />
+                card_view:backgroundTint="#9E774E" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/delete_item_button"
@@ -48,7 +48,7 @@
                 android:layout_marginBottom="16dp"
                 android:src="@android:drawable/ic_menu_delete"
                 app:elevation="0dp"
-                card_view:backgroundTint="#00BCD4" />
+                card_view:backgroundTint="#9E774E" />
 
             <!--<Button
                 android:id="@+id/delete_item_button"

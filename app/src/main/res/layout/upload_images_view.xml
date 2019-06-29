@@ -18,11 +18,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/shape"
-        android:backgroundTint="#03A9F4"
-        android:text="@string/get_recipes"
-        android:onClick="callImageReconition"
         android:layout_marginTop="5dp"
+        android:background="@drawable/shape"
+        android:backgroundTint="#FF9C00"
+        android:onClick="callImageReconition"
+        android:text="@string/get_recipes"
         android:textColor="@color/colorPrimary" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/images_recycler_view"
@@ -41,8 +41,8 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:onClick="addImage"
-        android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="#3F51B5"
+        android:src="@android:drawable/ic_menu_add"
+        app:backgroundTint="#FFEBCD"
         app:elevation="0dp" />
 
     <RelativeLayout

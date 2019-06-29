@@ -53,7 +53,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
         }
         if(cont==1){
-            item.setBackgroundColor(Color.parseColor("#CCFFFF"));
+            item.setBackgroundColor(Color.parseColor("#FFEBCD"));
         }
         item.setText(ingredientArray[0]);
     }

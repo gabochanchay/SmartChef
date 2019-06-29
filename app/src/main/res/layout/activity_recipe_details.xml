@@ -27,6 +27,8 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:onClick="loadWebPageRecipe"
         android:background="@drawable/shape"
+        android:backgroundTint="#FF9C00"
+        android:textColor="@color/colorPrimary"
         android:text="@string/view_recipe" />
 
     <TextView
