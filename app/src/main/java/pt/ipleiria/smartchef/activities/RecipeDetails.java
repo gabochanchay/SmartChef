@@ -12,9 +12,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.Map;
-
-import pt.ipleiria.smartchef.MapsActivity;
 import pt.ipleiria.smartchef.R;
 import pt.ipleiria.smartchef.adapter.IngredientsAdapter;
 import pt.ipleiria.smartchef.model.Recipe;

@@ -1,11 +1,11 @@
-package pt.ipleiria.smartchef;
+package pt.ipleiria.smartchef.activities;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import pt.ipleiria.smartchef.activities.UploadImagesActivity;
+import pt.ipleiria.smartchef.R;
 
 public class MainActivity extends AppCompatActivity {
 

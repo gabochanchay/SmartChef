@@ -146,12 +146,9 @@ public class CardViewRecipeList extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-//                        Log.d("Response", response.toString());
-//                log.warning(response.toString());
                         try {
                             Object recipes=response.get("hits");
                             JSONArray arrayRecipes=response.getJSONArray("hits");
-//                            ArrayList<Recipe> bitmaps=new ArrayList<>();
                             for (int i = 0; i < arrayRecipes.length(); i++) {
                                 JSONObject recipeJson=arrayRecipes.getJSONObject(i);
                                 Gson gson = new Gson();
@@ -162,12 +159,9 @@ public class CardViewRecipeList extends AppCompatActivity {
                                     if(s!=null) {
                                         s=validateIngredient(s);
                                     }
-//                                    log.warning("IIIIIIIIIIIIIIIIIIIIII"+s);
                                     ingredientsValidated.add(s);
                                 }
-                                for(String s: ingredientsValidated){
-//                                    log.warning("IIIIIIIIIIIIIIIIIIIIFFFFFFFFFF"+s);
-                                }
+
                                 recipe.setIngredientLines(ingredientsValidated);
                                 recipesList.add(recipe);
                             }
@@ -177,8 +171,8 @@ public class CardViewRecipeList extends AppCompatActivity {
                             mAdapter.notifyDataSetChanged();
                             if(recipesList.isEmpty()){
                                 imageView.setVisibility(View.VISIBLE);
-                                textView.setVisibility(View.GONE);
                             }
+                            textView.setVisibility(View.GONE);
                             validateNumberOfRecipes();
                         }catch (JSONException e){
 //                            log.warning(e.getMessage());
