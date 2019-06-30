@@ -274,7 +274,7 @@ public class UploadImagesActivity extends AppCompatActivity {
     }
 
     public void callImageReconition(View view){
-        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+
         boolean empty=validateImages();
         if(empty){
             CharSequence text = "Please upload images to every item, or delete the image you are not using";
@@ -282,6 +282,7 @@ public class UploadImagesActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(this, text, duration);
             toast.show();
         }else {
+            findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
             fillBitMapArrayList();
             foodWords = "";
             try {
@@ -296,22 +297,7 @@ public class UploadImagesActivity extends AppCompatActivity {
                     log.warning("word to Taxonomy:" + s);
 
                     consumeTaxonomyApi(URLEncoder.encode(s, "UTF-8"), this);
-//                    boolean food=Taxonomy.verifyFood(URLEncoder.encode(s, "UTF-8"), this);
-//                    if(food){
-//                        foodDetected.add(s);
-//                    }
                 }
-//                Set<String> foods=filterTypesOfFood(foodDetected);
-//                for(String s: foods){
-//                    log.warning("word to api recipes:--------:" + s);
-//                    foodWords=foodWords+","+s;
-//                }
-//                wordsNumberProcessed=0;
-//                log.warning("foooooooooooood:"+foodWords);
-//                Intent intent = new Intent(this, CardViewRecipeList.class);
-//                intent.putExtra("foodWords", foodWords);
-//                startActivity(intent);
-//                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
             } catch (IOException e) {
                 log.warning(e.getMessage());
             }
@@ -344,8 +330,8 @@ public class UploadImagesActivity extends AppCompatActivity {
                                 Object value = response.get(key);
                                 Double d=(Double) value;
                                 if(d.compareTo(0.4)>0 && key.startsWith(taxonmy)) {
-//                                    log.warning("*****"+word+"******************key:" + key+ "------------"+ String.valueOf(d));
                                     foodDetected.add(word);
+                                    return;
                                 }
                             }
                         } catch (Exception e) {
@@ -374,18 +360,15 @@ public class UploadImagesActivity extends AppCompatActivity {
     }
 
     private void validateEveryWordIsProcesed() {
-        log.warning("nuuuuuuuuuuuuuumeeeeerooooo:"+ wordsNumberFound);
-        log.warning("proceseddddddddddddd:"+ wordsNumberProcessed);
         if(wordsNumberProcessed==wordsNumberFound){
-            log.warning("YEEEEEEEEEEEEEEEEEEEEEEEEEEES");
             for(String s: foodDetected){
-                log.warning("word with out filtered::--------:" + s);
+//                log.warning("word with out filtered::--------:" + s);
             }
             Set<String> foods=filterTypesOfFood(foodDetected);
             String[] foodArray=new String[foods.size()];
             int cont=0;
             for(String s: foods){
-                log.warning("word to api recipes:--------:" + s);
+//                log.warning("word to api recipes:--------:" + s);
                 foodWords=foodWords+","+s;
                 s=s.replaceAll("\\+", " ");
                 foodArray[cont] = s;
@@ -393,9 +376,6 @@ public class UploadImagesActivity extends AppCompatActivity {
             }
             wordsNumberProcessed=0;
             log.warning("foooooooooooood:"+foodWords);
-
-
-//            Intent intent = new Intent(this, RecipeList.class);
             Intent intent = new Intent(this, CardViewRecipeList.class);
             intent.putExtra("foodWords", foodWords);
             intent.putExtra("foodArray", foodArray);

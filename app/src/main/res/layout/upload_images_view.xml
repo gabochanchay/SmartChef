@@ -15,15 +15,18 @@
 
     <Button
         android:id="@+id/getRecipes"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_marginLeft="7dp"
         android:layout_marginTop="5dp"
+        android:layout_marginRight="7dp"
         android:background="@drawable/shape"
         android:backgroundTint="#FF9C00"
         android:onClick="callImageReconition"
         android:text="@string/get_recipes"
-        android:textColor="@color/colorPrimary" />
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/images_recycler_view"
         android:layout_width="fill_parent"
@@ -41,8 +44,8 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:onClick="addImage"
-        android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="#FFEBCD"
+        android:src="@mipmap/add_icon_white"
+        app:backgroundTint="#5E1300"
         app:elevation="0dp" />
 
     <RelativeLayout
