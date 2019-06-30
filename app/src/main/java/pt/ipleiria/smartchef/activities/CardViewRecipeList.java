@@ -38,7 +38,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -47,10 +46,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -69,8 +66,9 @@ public class CardViewRecipeList extends AppCompatActivity {
     ArrayList<Recipe> recipesList=new ArrayList<>();
 
     private static Logger log= Logger.getLogger("log");
-    private ImageView imageView;
-    private TextView textView;
+    private ImageView failingFace;
+    private TextView processingTextView;
+    private TextView failingTextView;
     String[] foodArray;
 
     @Override
@@ -89,20 +87,23 @@ public class CardViewRecipeList extends AppCompatActivity {
         String foodWords = intent.getStringExtra("foodWords");
         foodArray=(String[]) intent.getSerializableExtra("foodArray");
         log.warning("words receied///////////////////////////////////:"+foodWords);
-        if(foodWords==null || foodWords.isEmpty()){
-            showErrorMessage();
-            return;
-        }
-        textView = findViewById(R.id.processing_text);
-        textView.setText(".........Processsing...........");
-        imageView = findViewById(R.id.sad_face);
-        Picasso.get().load("https://image.flaticon.com/icons/png/512/15/15135.png").into(imageView);
-        imageView.setVisibility(View.GONE);
+        processingTextView = findViewById(R.id.processing_text);
+        processingTextView.setText(".........Processsing...........");
+        failingFace = (ImageView) findViewById(R.id.sad_face);
+//        failingFace = findViewById(R.id.sad_face);
+        Picasso.get().load("https://image.flaticon.com/icons/png/512/15/15135.png").into(failingFace);
+        failingFace.setVisibility(View.GONE);
+        failingTextView = findViewById(R.id.failing_test);
 
 
-//        if(!foodWords.isEmpty()) {
+
+        if(foodWords.isEmpty()) {
+            failingTextView.setText("We did not detect food in the pictures that you upload please try to take new pictures");
+            processingTextView.setVisibility(View.GONE);
+            failingFace.setVisibility(View.VISIBLE);
+        }else{
             consumeRecipeAPI(foodWords, this);
-//        }
+        }
         // Code to Add an item with default animation
         //((CardViewRecipeAdapter) mAdapter).addItem(obj, index);
 
@@ -170,9 +171,9 @@ public class CardViewRecipeList extends AppCompatActivity {
                             }
                             mAdapter.notifyDataSetChanged();
                             if(recipesList.isEmpty()){
-                                imageView.setVisibility(View.VISIBLE);
+                                failingFace.setVisibility(View.VISIBLE);
                             }
-                            textView.setVisibility(View.GONE);
+                            processingTextView.setVisibility(View.GONE);
                             validateNumberOfRecipes();
                         }catch (JSONException e){
 //                            log.warning(e.getMessage());
@@ -202,7 +203,11 @@ public class CardViewRecipeList extends AppCompatActivity {
 
     private void validateNumberOfRecipes() {
         if(recipesList.isEmpty()){
-            showErrorMessage();
+//            showErrorMessage();
+            failingTextView.setText("We could not find recipes with the pictures that you upload please try again changing them");
+            failingTextView.setVisibility(View.VISIBLE);
+            processingTextView.setVisibility(View.GONE);
+            failingFace.setVisibility(View.VISIBLE);
         }
     }
 

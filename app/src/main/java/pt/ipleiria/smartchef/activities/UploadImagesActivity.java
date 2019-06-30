@@ -274,13 +274,13 @@ public class UploadImagesActivity extends AppCompatActivity {
     }
 
     public void callImageReconition(View view){
-
+        if(images.isEmpty() || images.size()==0){
+            showMessageError("Please add at least one image to process");
+            return;
+        }
         boolean empty=validateImages();
         if(empty){
-            CharSequence text = "Please upload images to every item, or delete the image you are not using";
-            int duration = Toast.LENGTH_LONG;
-            Toast toast = Toast.makeText(this, text, duration);
-            toast.show();
+            showMessageError("Please upload images to every item, or delete the image you are not using");
         }else {
             findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
             fillBitMapArrayList();
@@ -289,6 +289,14 @@ public class UploadImagesActivity extends AppCompatActivity {
                 objectsDetected = new ArrayList<>();
                 foodDetected = new ArrayList<>();
                 List<String> responseArray = CloudVision.callCloudVision(bitmapArrayList, CLOUD_VISION_API_KEY, getPackageName(), ANDROID_PACKAGE_HEADER, getPackageManager(), ANDROID_CERT_HEADER);
+                if(responseArray.isEmpty() || responseArray==null){
+                    showMessageError("We could not detect  the content in the pictures that you upload please try to take new pictures");
+                    return;
+                }
+                if(responseArray.get(0).equals("")){
+                    showMessageError("We could not detect  the content in the pictures that you upload please try to take new pictures");
+                    return;
+                }
                 wordsNumberFound = responseArray.size();
                 for (String s : responseArray) {
                     log.warning("-------------------" + s);
@@ -302,6 +310,15 @@ public class UploadImagesActivity extends AppCompatActivity {
                 log.warning(e.getMessage());
             }
         }
+    }
+
+    private void showMessageError(String m) {
+        CharSequence text = m;
+        int duration = Toast.LENGTH_LONG;
+        Toast toast = Toast.makeText(this, text, duration);
+        toast.show();
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+        return;
     }
 
     public void fillBitMapArrayList(){
@@ -331,7 +348,7 @@ public class UploadImagesActivity extends AppCompatActivity {
                                 Double d=(Double) value;
                                 if(d.compareTo(0.4)>0 && key.startsWith(taxonmy)) {
                                     foodDetected.add(word);
-                                    return;
+//                                    return;
                                 }
                             }
                         } catch (Exception e) {
@@ -339,6 +356,7 @@ public class UploadImagesActivity extends AppCompatActivity {
                         }
                         wordsNumberProcessed++;
                         validateEveryWordIsProcesed();
+                        findViewById(R.id.loadingPanel).setVisibility(View.INVISIBLE);
                     }
                 },
                 new Response.ErrorListener() {
@@ -380,7 +398,7 @@ public class UploadImagesActivity extends AppCompatActivity {
             intent.putExtra("foodWords", foodWords);
             intent.putExtra("foodArray", foodArray);
             startActivity(intent);
-            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
         }
     }
 

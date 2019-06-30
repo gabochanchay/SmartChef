@@ -136,13 +136,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         Object dataTransfer[] = new Object[2];
         NearbyPlacesData getNearbyPlacesData = new NearbyPlacesData();
-        String resturant = "supermarket";
-        String url = getUrl(latitude, longitude, resturant);
+        String supermarket = "supermarket";
+        String url = getUrl(latitude, longitude, supermarket);
         dataTransfer[0] = mMap;
         dataTransfer[1] = url;
 
         getNearbyPlacesData.execute(dataTransfer);
-        Toast.makeText(MapsActivity.this, "Showing Nearby Restaurants", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MapsActivity.this, "Showing Nearby Supermarkets", Toast.LENGTH_SHORT).show();
     }
 
     private String getUrl(double latitude , double longitude , String nearbyPlace)
