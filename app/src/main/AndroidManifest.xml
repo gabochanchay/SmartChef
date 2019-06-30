@@ -20,7 +20,9 @@
         android:icon="@mipmap/last_icon_app_round"
         android:label="SmartChef"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:largeHeap="true"
+        android:hardwareAccelerated="false">
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
