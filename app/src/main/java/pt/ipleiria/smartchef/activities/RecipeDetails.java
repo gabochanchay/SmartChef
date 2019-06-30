@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.Map;
+
+import pt.ipleiria.smartchef.MapsActivity;
 import pt.ipleiria.smartchef.R;
 import pt.ipleiria.smartchef.adapter.IngredientsAdapter;
 import pt.ipleiria.smartchef.model.Recipe;
@@ -51,6 +54,12 @@ public class RecipeDetails extends AppCompatActivity {
     public void loadWebPageRecipe(View view){
         Intent intent = new Intent(this, RecipeWebView.class);
         intent.putExtra("recipe", recipe);
+        startActivity(intent);
+    }
+
+    public void loadNearByPlaces(View view){
+        Intent intent = new Intent(this, MapsActivity.class);
+//        intent.putExtra("recipe", recipe);
         startActivity(intent);
     }
 }

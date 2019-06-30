@@ -31,6 +31,17 @@
         android:textColor="@color/colorPrimary"
         android:text="@string/view_recipe" />
 
+    <Button
+        android:id="@+id/chargeNearSupermarkets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:onClick="loadNearByPlaces"
+        android:background="@drawable/shape"
+        android:backgroundTint="#FF9C00"
+        android:textColor="@color/colorPrimary"
+        android:text="Nearby Supermarkets" />
+
     <TextView
         android:id="@+id/ingedientTittle"
         android:layout_width="match_parent"
