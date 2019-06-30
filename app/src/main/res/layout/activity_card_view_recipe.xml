@@ -10,6 +10,12 @@
         android:layout_height="fill_parent"
         android:gravity="center"
         android:textSize="30sp" />
+    <TextView
+        android:id="@+id/failing_test"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="bottom"
+        android:textSize="20sp" />
     <ImageView
         android:id="@+id/sad_face"
         android:layout_width="match_parent"
