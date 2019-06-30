@@ -64,8 +64,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-//        getNearBySupermarkets();
-        nearbySupermarkets();
     }
 
     @Override
@@ -142,122 +140,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         {
             LocationServices.FusedLocationApi.removeLocationUpdates(client, this);
         }
-    }
-
-    public void onClick(View v)
-    {
         Object dataTransfer[] = new Object[2];
         NearbyPlacesData getNearbyPlacesData = new NearbyPlacesData();
+        String resturant = "supermarket";
+        String url = getUrl(latitude, longitude, resturant);
+        dataTransfer[0] = mMap;
+        dataTransfer[1] = url;
 
-        switch(v.getId())
-        {
-            case R.id.B_search:
-                EditText tf_location =  findViewById(R.id.TF_location);
-                String location = tf_location.getText().toString();
-                List<Address> addressList;
-
-
-                if(!location.equals(""))
-                {
-                    Geocoder geocoder = new Geocoder(this);
-
-                    try {
-                        addressList = geocoder.getFromLocationName(location, 5);
-
-                        if(addressList != null)
-                        {
-                            for(int i = 0;i<addressList.size();i++)
-                            {
-                                LatLng latLng = new LatLng(addressList.get(i).getLatitude() , addressList.get(i).getLongitude());
-                                MarkerOptions markerOptions = new MarkerOptions();
-                                markerOptions.position(latLng);
-                                markerOptions.title(location);
-                                mMap.addMarker(markerOptions);
-                                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                                mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
-                            }
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            case R.id.B_hopistals:
-                mMap.clear();
-                String hospital = "hospital";
-                String url = getUrl(latitude, longitude, hospital);
-                dataTransfer[0] = mMap;
-                dataTransfer[1] = url;
-
-                getNearbyPlacesData.execute(dataTransfer);
-                Toast.makeText(MapsActivity.this, "Showing Nearby Hospitals", Toast.LENGTH_SHORT).show();
-                break;
-
-
-            case R.id.B_schools:
-                mMap.clear();
-                String school = "school";
-                url = getUrl(latitude, longitude, school);
-                dataTransfer[0] = mMap;
-                dataTransfer[1] = url;
-
-                getNearbyPlacesData.execute(dataTransfer);
-                Toast.makeText(MapsActivity.this, "Showing Nearby Schools", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.B_restaurants:
-                mMap.clear();
-                String resturant = "supermarket";
-                url = getUrl(latitude, longitude, resturant);
-                dataTransfer[0] = mMap;
-                dataTransfer[1] = url;
-
-                getNearbyPlacesData.execute(dataTransfer);
-                Toast.makeText(MapsActivity.this, "Showing Nearby Restaurants", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.B_to:
-        }
+        getNearbyPlacesData.execute(dataTransfer);
+        Toast.makeText(MapsActivity.this, "Showing Nearby Restaurants", Toast.LENGTH_SHORT).show();
     }
-
-    public void nearbySupermarkets()
-    {
-        Object dataTransfer[] = new Object[2];
-        NearbyPlacesData getNearbyPlacesData = new NearbyPlacesData();
-
-//                mMap.clear();
-                String resturant = "supermarket";
-//        latitude = location.getLatitude();
-//        longitude = location.getLongitude();
-        latitude = 39.7406529;
-        longitude = -8.8141192;
-                String url = getUrl(latitude, longitude, resturant);
-                dataTransfer[0] = mMap;
-                dataTransfer[1] = url;
-
-                getNearbyPlacesData.execute(dataTransfer);
-                Toast.makeText(MapsActivity.this, "Showing Nearby Restaurants", Toast.LENGTH_SHORT).show();
-    }
-
-    public void getNearBySupermarkets()
-    {
-        Object dataTransfer[] = new Object[2];
-        NearbyPlacesData getNearbyPlacesData = new NearbyPlacesData();
-
-//        switch(v.getId())
-//        {
-
-
-//                mMap.clear();
-                String supermarket = "supermarket";
-                String url = getUrl(latitude, longitude, supermarket);
-                dataTransfer[0] = mMap;
-                dataTransfer[1] = url;
-
-                getNearbyPlacesData.execute(dataTransfer);
-                Toast.makeText(MapsActivity.this, "Showing Nearby Supermarkets", Toast.LENGTH_SHORT).show();
-
-//        }
-    }
-
 
     private String getUrl(double latitude , double longitude , String nearbyPlace)
     {
