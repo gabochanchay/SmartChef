@@ -41,7 +41,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:onClick="addImage"
-        android:src="@android:drawable/ic_menu_add"
+        android:src="@android:drawable/ic_input_add"
         app:backgroundTint="#FFEBCD"
         app:elevation="0dp" />
 

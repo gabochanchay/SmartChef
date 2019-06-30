@@ -27,6 +27,7 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:onClick="loadWebPageRecipe"
         android:background="@drawable/shape"
+        android:layout_marginTop="8dp"
         android:backgroundTint="#FF9C00"
         android:textColor="@color/colorPrimary"
         android:text="@string/view_recipe" />
@@ -38,6 +39,7 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:onClick="loadNearByPlaces"
         android:background="@drawable/shape"
+        android:layout_marginTop="8dp"
         android:backgroundTint="#FF9C00"
         android:textColor="@color/colorPrimary"
         android:text="Nearby Supermarkets" />
