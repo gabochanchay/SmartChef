@@ -69,7 +69,7 @@ public class UploadImagesActivity extends AppCompatActivity {
     private static final String FOOD_TAXONOMY = "food and drink_";
     private static final String FOOD = "food";
     private static final String VEGETABLE = "vegetable";
-    private static final String[] WORDS_TO_FILTER= {"food","vegetable","gizzards"};
+    private static final String[] WORDS_TO_FILTER= {"food","vegetable","gizzards","meat"};
     private static final String TAG = UploadImagesactivityOldVersion.class.getSimpleName();
 
     private UploadImage imageSelected=null;
@@ -290,11 +290,11 @@ public class UploadImagesActivity extends AppCompatActivity {
                 foodDetected = new ArrayList<>();
                 List<String> responseArray = CloudVision.callCloudVision(bitmapArrayList, CLOUD_VISION_API_KEY, getPackageName(), ANDROID_PACKAGE_HEADER, getPackageManager(), ANDROID_CERT_HEADER);
                 if(responseArray.isEmpty() || responseArray==null){
-                    showMessageError("We could not detect  the content in the pictures that you upload please try to take new pictures");
+                    showMessageError("We could not detect the content in the pictures that you upload please try to take new pictures");
                     return;
                 }
                 if(responseArray.get(0).equals("")){
-                    showMessageError("We could not detect  the content in the pictures that you upload please try to take new pictures");
+                    showMessageError("We could not detect the content in the pictures that you upload please try to take new pictures");
                     return;
                 }
                 wordsNumberFound = responseArray.size();
@@ -307,7 +307,7 @@ public class UploadImagesActivity extends AppCompatActivity {
                     consumeTaxonomyApi(URLEncoder.encode(s, "UTF-8"), this);
                 }
             } catch (IOException e) {
-                log.warning(e.getMessage());
+                showMessageError("We could not filter thw words properly please try again");
             }
         }
     }

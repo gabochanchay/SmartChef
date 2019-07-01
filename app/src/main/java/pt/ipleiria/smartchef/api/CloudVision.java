@@ -167,9 +167,9 @@ public class CloudVision {
                             webEntities) {
                         log.warning(String.valueOf(webEntity.getScore()));
                         Double doubleScore = Double.valueOf(webEntity.getScore());
-                        if (doubleScore.compareTo(0.5) > 0) {
+//                        if (doubleScore.compareTo(0.5) > 0) {
                             message += webEntity.getDescription() + ",";
-                        }
+//                        }
                     }
                 }
             }
